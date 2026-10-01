@@ -13,6 +13,12 @@ If the player's position intersects with the coin's, the score is increased and 
 
 ## Planning required changes
 Change player speed, make character loop, add boost and change backdrop. 
+
+For Speed Boost {
+    if (a is pressed && speed boost is greater than 0) {
+        do the speed boost for a few seconds.
+    }
+}
 ## Brainstorming game ideas
 Change sprite for character and treasure, add debuffs like slow down fake treasures.
 ## Plan for implementing game
