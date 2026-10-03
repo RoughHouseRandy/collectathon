@@ -13,14 +13,19 @@ If the player's position intersects with the coin's, the score is increased and 
 
 ## Planning required changes
 Change player speed, make character loop, add boost and change backdrop. 
+Change starting position for player and treasure.
 
+Addtionally for speed boost we can initialize a variable to hold 3 amount of boosts.
 For Speed Boost {
     if (a is pressed && speed boost is greater than 0) {
         do the speed boost for a few seconds.
     }
 }
 ## Brainstorming game ideas
-Change sprite for character and treasure, add debuffs like slow down fake treasures.
+- Change sprite for character and treasure 
+- add debuffs like slow down fake treasures.
+- Add special pick ups to increase boosts once the character has run out of buffs. Perhaps adding
+a conditional: if(player has 0 speed boosts && player current_score > 3){spawn a buff}
 ## Plan for implementing game
 
 

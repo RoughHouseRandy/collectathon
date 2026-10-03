@@ -69,7 +69,7 @@ int main()
         }
         if (bn::keypad::start_pressed())
         {
-            // When the start pressed - reset the position of treasure, score, and player
+            // When the start button is pressed - reset the position of treasure, score, and player
             score = 0;
             player.set_position(-50,50);
             treasure.set_position(0,0);
