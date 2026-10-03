@@ -72,6 +72,7 @@ int main()
             // When the start pressed - reset the position of treasure, score, and player
             score = 0;
             player.set_position(-50,50);
+            treasure.set_position(0,0);
         }
 
         // The bounding boxes of the player and treasure, snapped to integer pixels
