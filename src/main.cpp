@@ -44,6 +44,7 @@ int main()
     bn::sprite_text_generator text_generator(common::fixed_8x16_sprite_font);
 
     int score = 0;
+    int speedBoost = 3;
 
     bn::sprite_ptr player = bn::sprite_items::square.create_sprite(-50, 50);
     bn::sprite_ptr treasure = bn::sprite_items::dot.create_sprite(0, 0);
@@ -73,6 +74,10 @@ int main()
             score = 0;
             player.set_position(-50,50);
             treasure.set_position(0,0);
+        }
+        if (bn::keypad::a_pressed()){
+            //Apply a speed boost that lasts 2 seconds
+            //Speed boost should decrement after it is used. speedBoost--;
         }
 
         // The bounding boxes of the player and treasure, snapped to integer pixels
