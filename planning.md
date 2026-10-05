@@ -15,8 +15,8 @@ If the player's position intersects with the coin's, the score is increased and 
 Change player speed, make character loop, add boost and change backdrop. 
 Change starting position for player and treasure.
 
-Addtionally for speed boost we can initialize a variable to hold 3 amount of boosts.
-For Speed Boost {
+Addtionally for speed boost we can initialize a variable to hold 3 boosts.
+For speedbBoost {
     if (a is pressed && speed boost is greater than 0) {
         do the speed boost for a few seconds.
     }
