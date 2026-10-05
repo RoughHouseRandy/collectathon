@@ -14,6 +14,7 @@
 
 #include "bn_sprite_items_dot.h"
 #include "bn_sprite_items_square.h"
+#include "bn_sprite_items_treasure.h"
 #include "common_fixed_8x16_font.h"
 
 // Pixels / Frame player moves at
@@ -57,6 +58,7 @@ int main()
 
     bn::sprite_ptr player = bn::sprite_items::square.create_sprite(START_X, START_Y);
     bn::sprite_ptr treasure = bn::sprite_items::dot.create_sprite(0, 0);
+    bn::sprite_ptr diamond = bn::sprite_items::treasure.create_sprite(10, 0);
 
     while (true)
     {
