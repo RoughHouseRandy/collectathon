@@ -17,7 +17,7 @@
 #include "common_fixed_8x16_font.h"
 
 // Pixels / Frame player moves at
-static constexpr bn::fixed SPEED = 2;
+static constexpr bn::fixed SPEED = 1.5;
 
 // Width and height of the the player and treasure bounding boxes
 static constexpr bn::size PLAYER_SIZE = {8, 8};
@@ -36,6 +36,10 @@ static constexpr int MAX_SCORE_CHARS = 11;
 static constexpr int SCORE_X = 70;
 static constexpr int SCORE_Y = -70;
 
+//Player spawn location
+static constexpr int START_X = 0;
+static constexpr int START_Y = 50; 
+
 int main()
 {
     bn::core::init();
@@ -52,7 +56,7 @@ int main()
     int score = 0;
     int speedBoost = 3;
 
-    bn::sprite_ptr player = bn::sprite_items::square.create_sprite(-50, 50);
+    bn::sprite_ptr player = bn::sprite_items::square.create_sprite(START_X, START_Y);
     bn::sprite_ptr treasure = bn::sprite_items::dot.create_sprite(0, 0);
 
     while (true)
@@ -78,8 +82,8 @@ int main()
         {
             // When the start button is pressed - reset the position of treasure, score, and player
             score = 0;
-            player.set_position(-50, 50);
-            treasure.set_position(0, 0);
+            player.set_position(START_X, START_Y);
+            treasure.set_position(0,0);
         }
         if (bn::keypad::a_pressed() && (speedBoost > 0))
         {
