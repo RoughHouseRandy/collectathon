@@ -24,6 +24,10 @@ For speedbBoost {
 ## Brainstorming game ideas
 - Change sprite for character and treasure 
 - add debuffs like slow down fake treasures.
+>> Create a sprite for the debuff
+>> Add a counter to track the coins. At 5, start spwning debuffs Every increment of ten, 
+increase the spawn of debuffs.
+>> Once speed boosts run out, begining spawning boost pick ups.
 - Add special pick ups to increase boosts once the character has run out of buffs. Perhaps adding
 a conditional: if(player has 0 speed boosts && player current_score > 3){spawn a buff}
 ## Plan for implementing game
