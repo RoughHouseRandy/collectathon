@@ -43,17 +43,6 @@ static constexpr int START_Y = 50;
 int main()
 {
     bn::core::init();
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-    int frame_count = 0;
->>>>>>> 0951ece05c63c1300eaa1b63259373de0112c8c4
-
->>>>>>> 5b9100bdfd626a9bf599dbd94cc60645d0ed2717
->>>>>>> e0d4d0774059be67dcfaf41db32d11b36ffdf7a8
     // Background color
     bn::backdrop::set_color(bn::color(0x6318));
 
