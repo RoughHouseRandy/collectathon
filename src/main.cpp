@@ -150,6 +150,10 @@ int main()
         {
             player.set_position(current_x, MIN_Y);
         }
+        if (player.y() < MIN_Y)
+        {
+            player.set_position(current_x, MAX_Y);
+        }
 
         // Update score display
         bn::string<MAX_SCORE_CHARS> score_string = bn::to_string<MAX_SCORE_CHARS>(score);
