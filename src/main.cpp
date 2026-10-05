@@ -60,7 +60,7 @@ int main()
 
     while (true)
     {
-        //tracks the coordinate for x and y.
+        // tracks the coordinate for x and y.
         int current_x = player.x().round_integer();
         int current_y = player.y().round_integer();
         // Move player with d-pad
@@ -138,13 +138,16 @@ int main()
             score++;
         }
         // If the player is outside the bounds of the screen, they loop to the other side
-        if(player.x() > MAX_X){
+        if (player.x() > MAX_X)
+        {
             player.set_position(MIN_X, current_y);
         }
-        if(player.x() < MIN_X){
+        if (player.x() < MIN_X)
+        {
             player.set_position(MAX_X, current_y);
         }
-        if(player.y() > MAX_Y){
+        if (player.y() > MAX_Y)
+        {
             player.set_position(current_x, MIN_Y);
         }
 
