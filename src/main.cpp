@@ -93,7 +93,7 @@ int main()
             // Apply a speed boost that lasts 2 seconds
             bn::timers::ticks_per_frame();
             // Speed boost should decrement after it is used. speedBoost--;
-                speedBoost--;
+            speedBoost--;
         }
 
         // The bounding boxes of the player and treasure, snapped to integer pixels
