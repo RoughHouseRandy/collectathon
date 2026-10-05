@@ -43,13 +43,8 @@ static constexpr int START_Y = 50;
 int main()
 {
     bn::core::init();
-<<<<<<< HEAD
-=======
-    int frame_count = 0;
-
->>>>>>> 9c3a3651e6e1b3de0a2d13a105da88e7ca6b0a8e
     // Background color
-    bn::backdrop::set_color(bn::color(0x7BFF));
+    bn::backdrop::set_color(bn::color(0x6318));
 
     bn::random rng = bn::random();
 
@@ -90,32 +85,31 @@ int main()
             treasure.set_position(0, 0);
             speedBoost = 3; // Reset the speed boost
         }
+
+        // When the A button is pressed apply a speed boost that lasts 5 seconds
         if (bn::keypad::a_pressed() && (speedBoost > 0))
         {
-            // int seconds = bn::timers::ticks_per_second();
             int seconds = 0;
-            while (seconds != 2)
+            while (seconds != 5)
             {
                 if (bn::keypad::left_held())
                 {
-                    player.set_x(player.x() - (SPEED * 10));
+                    player.set_x(player.x() - (SPEED * 3));
                 }
                 if (bn::keypad::right_held())
                 {
-                    player.set_x(player.x() + (SPEED * 10));
+                    player.set_x(player.x() + (SPEED * 3));
                 }
                 if (bn::keypad::up_held())
                 {
-                    player.set_y(player.y() - (SPEED * 10));
+                    player.set_y(player.y() - (SPEED * 3));
                 }
                 if (bn::keypad::down_held())
                 {
-                    player.set_y(player.y() + (SPEED * 10));
+                    player.set_y(player.y() + (SPEED * 3));
                 }
                 seconds++;
             }
-            // Apply a speed boost that lasts 2 seconds
-
             // Speed boost should decrement after it is used. speedBoost--;
             speedBoost--;
         }
