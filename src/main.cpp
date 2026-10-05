@@ -11,6 +11,7 @@
 #include <bn_color.h>
 #include <bn_colors.h>
 #include <bn_backdrop.h>
+#include <bn_timers.h>
 
 #include "bn_sprite_items_dot.h"
 #include "bn_sprite_items_square.h"
@@ -36,13 +37,18 @@ static constexpr int MAX_SCORE_CHARS = 11;
 static constexpr int SCORE_X = 70;
 static constexpr int SCORE_Y = -70;
 
-//Player spawn location
+// Player spawn location
 static constexpr int START_X = 0;
-static constexpr int START_Y = 50; 
+static constexpr int START_Y = 50;
 
 int main()
 {
     bn::core::init();
+<<<<<<< HEAD
+=======
+    int frame_count = 0;
+
+>>>>>>> 9c3a3651e6e1b3de0a2d13a105da88e7ca6b0a8e
     // Background color
     bn::backdrop::set_color(bn::color(0x7BFF));
 
@@ -82,11 +88,13 @@ int main()
             // When the start button is pressed - reset the position of treasure, score, and player
             score = 0;
             player.set_position(START_X, START_Y);
-            treasure.set_position(0,0);
+            treasure.set_position(0, 0);
+            speedBoost = 3; // Reset the speed boost
         }
         if (bn::keypad::a_pressed() && (speedBoost > 0))
         {
             // Apply a speed boost that lasts 2 seconds
+            bn::timers::ticks_per_frame();
             // Speed boost should decrement after it is used. speedBoost--;
             speedBoost--;
         }
