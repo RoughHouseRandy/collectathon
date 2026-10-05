@@ -43,7 +43,6 @@ static constexpr int START_Y = 50;
 int main()
 {
     bn::core::init();
-    int frame_count = 0;
 
     // Background color
     bn::backdrop::set_color(bn::color(0x7BFF));
@@ -137,6 +136,11 @@ int main()
 
             score++;
         }
+        // If the player is outside the bounds of the screen, they loop to the other side
+        // if(player.x() > MAX_X){
+        //     int current_y = player.y().round_integer();
+        //     player.set_position(MIN_X,current_y);
+        // }
 
         // Update score display
         bn::string<MAX_SCORE_CHARS> score_string = bn::to_string<MAX_SCORE_CHARS>(score);
