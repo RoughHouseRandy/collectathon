@@ -8,13 +8,16 @@
 #include <bn_sprite_text_generator.h>
 #include <bn_size.h>
 #include <bn_string.h>
+#include <bn_color.h>
+#include <bn_colors.h>
+#include <bn_backdrop.h>
 
 #include "bn_sprite_items_dot.h"
 #include "bn_sprite_items_square.h"
 #include "common_fixed_8x16_font.h"
 
 // Pixels / Frame player moves at
-static constexpr bn::fixed SPEED = 1;
+static constexpr bn::fixed SPEED = 2;
 
 // Width and height of the the player and treasure bounding boxes
 static constexpr bn::size PLAYER_SIZE = {8, 8};
@@ -36,6 +39,9 @@ static constexpr int SCORE_Y = -70;
 int main()
 {
     bn::core::init();
+
+    // Background color
+    bn::backdrop::set_color(bn::color(0x7BFF));
 
     bn::random rng = bn::random();
 
@@ -72,12 +78,14 @@ int main()
         {
             // When the start button is pressed - reset the position of treasure, score, and player
             score = 0;
-            player.set_position(-50,50);
-            treasure.set_position(0,0);
+            player.set_position(-50, 50);
+            treasure.set_position(0, 0);
         }
-        if (bn::keypad::a_pressed()){
-            //Apply a speed boost that lasts 2 seconds
-            //Speed boost should decrement after it is used. speedBoost--;
+        if (bn::keypad::a_pressed() && (speedBoost > 0))
+        {
+            // Apply a speed boost that lasts 2 seconds
+            // Speed boost should decrement after it is used. speedBoost--;
+            speedBoost--;
         }
 
         // The bounding boxes of the player and treasure, snapped to integer pixels
