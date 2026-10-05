@@ -11,7 +11,6 @@
 #include <bn_color.h>
 #include <bn_colors.h>
 #include <bn_backdrop.h>
-#include <bn_timers.h>
 
 #include "bn_sprite_items_dot.h"
 #include "bn_sprite_items_square.h"
@@ -90,8 +89,30 @@ int main()
         }
         if (bn::keypad::a_pressed() && (speedBoost > 0))
         {
+            // int seconds = bn::timers::ticks_per_second();
+            int seconds = 0;
+            while (seconds != 2)
+            {
+                if (bn::keypad::left_held())
+                {
+                    player.set_x(player.x() - (SPEED * 10));
+                }
+                if (bn::keypad::right_held())
+                {
+                    player.set_x(player.x() + (SPEED * 10));
+                }
+                if (bn::keypad::up_held())
+                {
+                    player.set_y(player.y() - (SPEED * 10));
+                }
+                if (bn::keypad::down_held())
+                {
+                    player.set_y(player.y() + (SPEED * 10));
+                }
+                seconds++;
+            }
             // Apply a speed boost that lasts 2 seconds
-            bn::timers::ticks_per_frame();
+
             // Speed boost should decrement after it is used. speedBoost--;
             speedBoost--;
         }
