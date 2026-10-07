@@ -147,6 +147,7 @@ int main()
         {
             player.set_position(current_x, MAX_Y);
         }
+
         // Changes player speed if speed boost is active
         if (speed_boost_active)
         {
