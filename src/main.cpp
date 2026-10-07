@@ -58,7 +58,7 @@ int main()
     int score = 0;
     int speedBoost = 3;
 
-    //Will hold the timer for the speed boost.
+    // Will hold the timer for the speed boost.
     int speed_boost_timer = 0;
     bool speed_boost_active = false;
 
@@ -102,12 +102,11 @@ int main()
         // When the A button is pressed apply a speed boost that lasts 5 seconds
         if (bn::keypad::a_pressed() && (speedBoost > 0))
         {
-            //Speed boost is activated
+            // Speed boost is activated
             speed_boost_active = true;
             speed_boost_timer = 0;
             // Speed boost should decrement after it is used. speedBoost--;
             speedBoost--;
-           
         }
 
         // The bounding boxes of the player and treasure, snapped to integer pixels
@@ -148,12 +147,13 @@ int main()
         {
             player.set_position(current_x, MAX_Y);
         }
+
         // Changes player speed if speed boost is active
-        if(speed_boost_active)
+        if (speed_boost_active)
         {
             current_speed = SPEED * 3;
             speed_boost_timer++;
-            if(speed_boost_timer == 180)
+            if (speed_boost_timer == 180)
             {
                 speed_boost_active = false;
                 current_speed = SPEED;
@@ -161,7 +161,7 @@ int main()
         }
 
         // Update score display
-        bn::string<MAX_SCORE_CHARS> score_string = bn::to_string<MAX_SCORE_CHARS>(score);   
+        bn::string<MAX_SCORE_CHARS> score_string = bn::to_string<MAX_SCORE_CHARS>(score);
         score_sprites.clear();
         text_generator.generate(SCORE_X, SCORE_Y,
                                 score_string,
