@@ -31,6 +31,14 @@ increase the spawn of debuffs.
 - Add special pick ups to increase boosts once the character has run out of buffs. Perhaps adding
 a conditional: if(player has 0 speed boosts && player current_score > 3){spawn a buff}
 - Add more treasures with extra point values.
+
+10/7/26
+Changing the music up upon a certain, score threshold - Russell.
+Adding a more dyanmic sprite. - Both.
+Add a more cavelike background - Both.
+Enlarge the sprites - Both.
+
 ## Plan for implementing game
+
 
 
