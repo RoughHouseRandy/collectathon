@@ -12,12 +12,11 @@
 #include <bn_colors.h>
 #include <bn_backdrop.h>
 
-// #include "bn_sprite_items_dot.h"
-// #include "bn_sprite_items_square.h"
 #include "bn_sprite_items_player.h"
 #include "bn_sprite_items_treasure.h"
 #include "common_fixed_8x16_font.h"
 #include "bn_sound_items.h"
+#include "bn_music_items.h"
 
 // Pixels / Frame player moves at
 static constexpr bn::fixed SPEED = 1.5;
@@ -47,7 +46,7 @@ int main()
 {
     bn::core::init();
     // Background color
-    bn::backdrop::set_color(bn::color(0x6318));
+    bn::backdrop::set_color(bn::color(0x0210));
 
     bn::random rng = bn::random();
     bn::fixed current_speed = SPEED;
@@ -58,18 +57,19 @@ int main()
     int score = 0;
     int speedBoost = 3;
 
-    //Will hold the timer for the speed boost.
+    //Background music
+    bn::music_items::cavern.play(0.1);
+
+    // Will hold the timer for the speed boost.
     int speed_boost_timer = 0;
     bool speed_boost_active = false;
-
-    // bn::sprite_ptr player = bn::sprite_items::square.create_sprite(START_X, START_Y);
-    // bn::sprite_ptr treasure = bn::sprite_items::dot.create_sprite(0, 0);
 
     bn::sprite_ptr player = bn::sprite_items::player.create_sprite(START_X, START_Y);
     bn::sprite_ptr treasure = bn::sprite_items::treasure.create_sprite(0, 0);
 
     while (true)
     {
+
         // tracks the coordinate for x and y.
         int current_x = player.x().round_integer();
         int current_y = player.y().round_integer();
@@ -102,12 +102,11 @@ int main()
         // When the A button is pressed apply a speed boost that lasts 5 seconds
         if (bn::keypad::a_pressed() && (speedBoost > 0))
         {
-            //Speed boost is activated
+            // Speed boost is activated
             speed_boost_active = true;
             speed_boost_timer = 0;
             // Speed boost should decrement after it is used. speedBoost--;
             speedBoost--;
-           
         }
 
         // The bounding boxes of the player and treasure, snapped to integer pixels
@@ -149,11 +148,11 @@ int main()
             player.set_position(current_x, MAX_Y);
         }
         // Changes player speed if speed boost is active
-        if(speed_boost_active)
+        if (speed_boost_active)
         {
             current_speed = SPEED * 3;
             speed_boost_timer++;
-            if(speed_boost_timer == 180)
+            if (speed_boost_timer == 180)
             {
                 speed_boost_active = false;
                 current_speed = SPEED;
@@ -161,7 +160,7 @@ int main()
         }
 
         // Update score display
-        bn::string<MAX_SCORE_CHARS> score_string = bn::to_string<MAX_SCORE_CHARS>(score);   
+        bn::string<MAX_SCORE_CHARS> score_string = bn::to_string<MAX_SCORE_CHARS>(score);
         score_sprites.clear();
         text_generator.generate(SCORE_X, SCORE_Y,
                                 score_string,
