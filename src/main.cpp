@@ -17,6 +17,7 @@
 #include "bn_sprite_items_player.h"
 #include "bn_sprite_items_treasure.h"
 #include "common_fixed_8x16_font.h"
+#include "bn_sound_items.h"
 
 // Pixels / Frame player moves at
 static constexpr bn::fixed SPEED = 1.5;
@@ -126,7 +127,8 @@ int main()
             int new_x = rng.get_int(MIN_X, MAX_X);
             int new_y = rng.get_int(MIN_Y, MAX_Y);
             treasure.set_position(new_x, new_y);
-
+            // If the player interesects with the treasure, play a jingle sfx.
+            bn::sound_items::sparkle.play();
             score++;
         }
         // If the player is outside the bounds of the screen, they loop to the other side
