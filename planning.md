@@ -38,6 +38,14 @@ Adding a more dyanmic sprite. - Both.
 Add a more cavelike background - Both.
 Enlarge the sprites - Both.
 
+10/8/25 - Feedback
+Cambpell and Esteban used switch statements with coin counts to change level backgrounds and text
+We could use this to make a game over screen.
+Text clear, blending + transparency.
+Joey had a timer and the timer runs outs, game over.
+Displays top score.
+
+
 ## Plan for implementing game
 
 
