@@ -77,13 +77,19 @@ int main()
     int speed_boost_timer = 0;
     bool speed_boost_active = false;
 
+    // Variables for the spawn coordinates for the snake
+    int snk_x = 0;
+    int snk_y = 0;
+
     bn::sprite_ptr player = bn::sprite_items::player.create_sprite(START_X, START_Y);
     bn::sprite_ptr treasure = bn::sprite_items::treasure.create_sprite(0, 0);
-    bn::sprite_ptr snake = bn::sprite_items::snake.create_sprite();
+    // Start the snakes out of bounds. With the scroll loop logic, the player will not touch it here.
+    bn::sprite_ptr snake = bn::sprite_items::snake.create_sprite(300, 300);
+    // bn::sprite_ptr snake_2 = bn::sprite_items::snake.create_sprite(300, 300);
+    // bn::sprite_ptr snake_3 = bn::sprite_items::snake.create_sprite(300, 300);
 
     while (true)
     {
-
         // tracks the coordinate for x and y.
         int current_x = player.x().round_integer();
         int current_y = player.y().round_integer();
@@ -132,7 +138,7 @@ int main()
                                           treasure.y().round_integer(),
                                           TREASURE_SIZE.width(),
                                           TREASURE_SIZE.height());
-
+        // The bounding box of the snake debuff
         bn::rect snake_rect = bn::rect(snake.x().round_integer(),
                                        snake.y().round_integer(),
                                        SNAKE_SIZE.width(),
@@ -153,6 +159,9 @@ int main()
         // If the player's bounding box hits the snake, remove a point from the player
         if (player_rect.intersects(snake_rect))
         {
+            // Sets the random spawn coordinates for the snake
+            snk_x = rng.get_int(MIN_X, MAX_X);
+            snk_y = rng.get_int(MIN_Y, MAX_Y);
             // Move the snake outside of the screen
             snake.set_position(300, 200);
             // Reduce the player score
@@ -201,16 +210,37 @@ int main()
         speed_boost_sprites.clear();
         text_generator.generate(BOOST_X, BOOST_Y, boost_string, speed_boost_sprites);
 
-        // // If the player score is a multiple of 5, add a snake
-        // if (score / 5 == 0)
+        // If the player score is a multiple of 5, add a snake
+        if (score == 5)
+        {
+            // Spawn in the snake within the bounds of the screen
+            snake.set_position(snk_x, snk_y);
+        }
+        else if (score == 10)
         // {
-        //     bn::sprite_ptr snake = bn::sprite_items::snake.create_sprite();
+        //     snake.set_position(snk_x, snk_y);
+        //     snake_2.set_position(snk_x, snk_y);
+        // }
+        // else if (score < 15)
+        // {
+        //     snake.set_position(snk_x, snk_y);
+        //     snake_2.set_position(snk_x, snk_y);
+        //     snake_3.set_position(snk_x, snk_y);
+        // }
 
-        //     // The bounding box of the snake debuff
-        //     bn::rect snake_rect = bn::rect(snake.x().round_integer(),
-        //                                    snake.y().round_integer(),
-        //                                    SNAKE_SIZE.width(),
-        //                                    SNAKE_SIZE.height());
+        // switch (score)
+        // {
+        // case 5:
+        //     snake.set_position(snk_x, snk_y);
+        //     break;
+        // case 10:
+        //     snake.set_position(snk_x, snk_y);
+        //     snake_2.set_position(snk_x, snk_y);
+        //     break;
+        // case (score > 15):
+
+        // default:
+        //     break;
         // }
 
         // Update RNG seed every frame so we don't get the same sequence of positions every time
