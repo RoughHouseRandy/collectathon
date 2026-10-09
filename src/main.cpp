@@ -14,6 +14,7 @@
 
 #include "bn_sprite_items_player.h"
 #include "bn_sprite_items_treasure.h"
+#include "bn_sprite_items_snake.h"
 #include "common_fixed_8x16_font.h"
 #include "bn_sound_items.h"
 #include "bn_music_items.h"
@@ -24,6 +25,8 @@ static constexpr bn::fixed SPEED = 1.5;
 // Width and height of the the player and treasure bounding boxes
 static constexpr bn::size PLAYER_SIZE = {8, 8};
 static constexpr bn::size TREASURE_SIZE = {8, 8};
+// Width and height of the snake debuff bounding box
+static constexpr bn::size SNAKE_SIZE = {8, 8};
 
 // Full bounds of the screen
 static constexpr int MIN_Y = -bn::display::height() / 2;
@@ -33,7 +36,7 @@ static constexpr int MAX_X = bn::display::width() / 2;
 
 // Number of characters required to show the longest numer possible in an int (-2147483647)
 static constexpr int MAX_SCORE_CHARS = 11;
-//Number of boosts is only set to 3. The characters required to show this should be 1
+// Number of boosts is only set to 3. The characters required to show this should be 1
 static constexpr int MAX_BOOST_CHARS = 1;
 
 // Score location
@@ -67,8 +70,8 @@ int main()
     int score = 0;
     int speedBoost = 3;
 
-    //Background music
-    bn::music_items::cavern.play(0.1);
+    // Background music
+    bn::music_items::cavern.play(0.5);
 
     // Will hold the timer for the speed boost.
     int speed_boost_timer = 0;
@@ -76,6 +79,7 @@ int main()
 
     bn::sprite_ptr player = bn::sprite_items::player.create_sprite(START_X, START_Y);
     bn::sprite_ptr treasure = bn::sprite_items::treasure.create_sprite(0, 0);
+    bn::sprite_ptr snake = bn::sprite_items::snake.create_sprite();
 
     while (true)
     {
@@ -129,6 +133,11 @@ int main()
                                           TREASURE_SIZE.width(),
                                           TREASURE_SIZE.height());
 
+        bn::rect snake_rect = bn::rect(snake.x().round_integer(),
+                                       snake.y().round_integer(),
+                                       SNAKE_SIZE.width(),
+                                       SNAKE_SIZE.height());
+
         // If the bounding boxes overlap, set the treasure to a new location an increase score
         if (player_rect.intersects(treasure_rect))
         {
@@ -140,6 +149,17 @@ int main()
             bn::sound_items::sparkle.play();
             score++;
         }
+
+        // If the player's bounding box hits the snake, remove a point from the player
+        if (player_rect.intersects(snake_rect))
+        {
+            // Move the snake outside of the screen
+            int out_of_bounds_x = 300;
+            int out_of_bounds_y = 200;
+            // Reduce the player score
+            score--;
+        }
+
         // If the player is outside the bounds of the screen, they loop to the other side
         if (player.x() > MAX_X)
         {
@@ -176,11 +196,23 @@ int main()
         text_generator.generate(SCORE_X, SCORE_Y,
                                 score_string,
                                 score_sprites);
-                                
+
         // Update speed boost display
         bn::string<MAX_BOOST_CHARS> boost_string = bn::to_string<MAX_BOOST_CHARS>(speedBoost);
         speed_boost_sprites.clear();
-        text_generator.generate(BOOST_X,BOOST_Y, boost_string,speed_boost_sprites);
+        text_generator.generate(BOOST_X, BOOST_Y, boost_string, speed_boost_sprites);
+
+        // // If the player score is a multiple of 5, add a snake
+        // if (score / 5 == 0)
+        // {
+        //     bn::sprite_ptr snake = bn::sprite_items::snake.create_sprite();
+
+        //     // The bounding box of the snake debuff
+        //     bn::rect snake_rect = bn::rect(snake.x().round_integer(),
+        //                                    snake.y().round_integer(),
+        //                                    SNAKE_SIZE.width(),
+        //                                    SNAKE_SIZE.height());
+        // }
 
         // Update RNG seed every frame so we don't get the same sequence of positions every time
         rng.update();
@@ -188,3 +220,8 @@ int main()
         bn::core::update();
     }
 }
+
+void make_snake()
+{
+    bn::sprite_ptr snake = bn::sprite_items::snake.create_sprite();
+};

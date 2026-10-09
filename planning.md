@@ -45,8 +45,9 @@ Text clear, blending + transparency.
 Joey had a timer and the timer runs outs, game over.
 Displays top score.
 
+240 X 160 for backgrounds
 
 ## Plan for implementing game
-
+If the points interval can be divided by 5 and = 5, spawn multiples of snakes.
 
 
