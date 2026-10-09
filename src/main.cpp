@@ -154,8 +154,7 @@ int main()
         if (player_rect.intersects(snake_rect))
         {
             // Move the snake outside of the screen
-            int out_of_bounds_x = 300;
-            int out_of_bounds_y = 200;
+            snake.set_position(300, 200);
             // Reduce the player score
             score--;
         }
