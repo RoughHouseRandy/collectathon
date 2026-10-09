@@ -159,7 +159,9 @@ int main()
         // If the player's bounding box hits the snake, remove a point from the player
         if (player_rect.intersects(snake_rect))
         {
-            // Sets the random spawn coordinates for the snake
+            // Play the snake rattle
+            bn::sound_items::rattlesnake.play();
+            // Set the random spawn coordinates for the snake
             snk_x = rng.get_int(MIN_X, MAX_X);
             snk_y = rng.get_int(MIN_Y, MAX_Y);
             // Move the snake outside of the screen
@@ -217,34 +219,34 @@ int main()
             snake.set_position(snk_x, snk_y);
         }
         else if (score == 10)
-        // {
-        //     snake.set_position(snk_x, snk_y);
-        //     snake_2.set_position(snk_x, snk_y);
-        // }
-        // else if (score < 15)
-        // {
-        //     snake.set_position(snk_x, snk_y);
-        //     snake_2.set_position(snk_x, snk_y);
-        //     snake_3.set_position(snk_x, snk_y);
-        // }
+            // {
+            //     snake.set_position(snk_x, snk_y);
+            //     snake_2.set_position(snk_x, snk_y);
+            // }
+            // else if (score < 15)
+            // {
+            //     snake.set_position(snk_x, snk_y);
+            //     snake_2.set_position(snk_x, snk_y);
+            //     snake_3.set_position(snk_x, snk_y);
+            // }
 
-        // switch (score)
-        // {
-        // case 5:
-        //     snake.set_position(snk_x, snk_y);
-        //     break;
-        // case 10:
-        //     snake.set_position(snk_x, snk_y);
-        //     snake_2.set_position(snk_x, snk_y);
-        //     break;
-        // case (score > 15):
+            // switch (score)
+            // {
+            // case 5:
+            //     snake.set_position(snk_x, snk_y);
+            //     break;
+            // case 10:
+            //     snake.set_position(snk_x, snk_y);
+            //     snake_2.set_position(snk_x, snk_y);
+            //     break;
+            // case (score > 15):
 
-        // default:
-        //     break;
-        // }
+            // default:
+            //     break;
+            // }
 
-        // Update RNG seed every frame so we don't get the same sequence of positions every time
-        rng.update();
+            // Update RNG seed every frame so we don't get the same sequence of positions every time
+            rng.update();
 
         bn::core::update();
     }
