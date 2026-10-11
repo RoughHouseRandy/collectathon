@@ -45,15 +45,20 @@ static constexpr int MAX_X = bn::display::width() / 2;
 static constexpr int MAX_SCORE_CHARS = 11;
 // Number of boosts is only set to 3. The characters required to show this should be 1
 static constexpr int MAX_BOOST_CHARS = 1;
+// Timer
+static constexpr int MAX_SECONDS = 3;
 
 // Score location
 static constexpr int SCORE_X = 105;
 static constexpr int SCORE_Y = -70;
 
 // Boost location
-
 static constexpr int BOOST_X = 105;
 static constexpr int BOOST_Y = -60;
+
+// Timer location
+static constexpr int TIME_X = -80;
+static constexpr int TIME_Y = -70;
 
 // Player spawn location
 static constexpr int START_X = 0;
@@ -83,6 +88,8 @@ int main()
     bn::vector<bn::sprite_ptr, 32> text_sprites; // Vector for generated text
     text_generator.generate(45, -70, "Score:", text_sprites);
     text_generator.generate(45, -60, "Boosts:", text_sprites);
+
+    bn::vector<bn::sprite_ptr, MAX_SECONDS> timer_sprites = {};
     text_generator.generate(-115, -70, "Time:", text_sprites);
 
     int score = 0;
@@ -113,9 +120,9 @@ int main()
     int snk_2_y = 0;
     int snk_3_y = 0;
 
-    //random spawn
-    int rnd_spawnx = rng.get_int(MIN_X,MAX_X);
-    int rnd_spawny = rng.get_int(MIN_Y,MAX_Y);
+    // random spawn
+    int rnd_spawnx = rng.get_int(MIN_X, MAX_X);
+    int rnd_spawny = rng.get_int(MIN_Y, MAX_Y);
 
     bn::sprite_ptr player = bn::sprite_items::player.create_sprite(START_X, START_Y);
     bn::sprite_ptr treasure = bn::sprite_items::treasure.create_sprite(0, 0);
@@ -311,6 +318,11 @@ int main()
         bn::string<MAX_BOOST_CHARS> boost_string = bn::to_string<MAX_BOOST_CHARS>(speedBoost);
         speed_boost_sprites.clear();
         text_generator.generate(BOOST_X, BOOST_Y, boost_string, speed_boost_sprites);
+
+        // Update the display for the timer
+        bn::string<MAX_SECONDS> timer_string = bn::to_string<MAX_SECONDS>(game_timer);
+        timer_sprites.clear();
+        text_generator.generate(TIME_X, TIME_Y, timer_string, timer_sprites);
 
         // If the player score is a multiple of 5, add a snake
         if (score >= 5)
