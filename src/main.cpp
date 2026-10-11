@@ -105,7 +105,7 @@ int main()
     bn::sprite_ptr snake_2 = bn::sprite_items::snake_2.create_sprite(300, 300);
     // bn::sprite_ptr snake_3 = bn::sprite_items::snake.create_sprite(300, 300);
     // Spawn a more valuable treasure to allow for double points
-    bn::sprite_ptr diamond = bn::sprite_items::diamond.create_sprite(320,320);
+    bn::sprite_ptr diamond = bn::sprite_items::diamond.create_sprite(320, 320);
 
     while (true)
     {
@@ -136,7 +136,7 @@ int main()
             player.set_position(START_X, START_Y);
             snake.set_position(300, 300);
             treasure.set_position(0, 0);
-            diamond.set_position(320,320);
+            diamond.set_position(320, 320);
             speedBoost = 3; // Reset the speed boost
         }
 
@@ -172,9 +172,9 @@ int main()
 
         // The bounding box of the diamond
         bn::rect diamond_rect = bn::rect(diamond.x().round_integer(),
-                                    diamond.y().round_integer(),
-                                    DIAMOND_SIZE.width(),
-                                    DIAMOND_SIZE.height());
+                                         diamond.y().round_integer(),
+                                         DIAMOND_SIZE.width(),
+                                         DIAMOND_SIZE.height());
 
         // If the bounding boxes overlap, set the treasure to a new location an increase score
         if (player_rect.intersects(treasure_rect))
@@ -207,8 +207,8 @@ int main()
             score--;
         }
 
-        //If the player intersects with the diamond, add 2 points to the player
-        if(player_rect.intersects(diamond_rect))
+        // If the player intersects with the diamond, add 2 points to the player
+        if (player_rect.intersects(diamond_rect))
         {
             bn::sound_items::sparkle.play();
             score += 2;
@@ -280,13 +280,13 @@ int main()
             }
         }
 
-        if(score >= 3)
+        if (score >= 3)
         {
-            //Spawn diamond within the bounds of the screen
+            // Spawn diamond within the bounds of the screen
             int new_x = rng.get_int(MIN_X, MAX_X);
             int new_y = rng.get_int(MIN_Y, MAX_Y);
 
-            diamond.set_position(new_x,new_y);
+            diamond.set_position(new_x, new_y);
         }
 
         rng.update();
