@@ -113,6 +113,10 @@ int main()
     int snk_2_y = 0;
     int snk_3_y = 0;
 
+    //random spawn
+    int rnd_spawnx = rng.get_int(MIN_X,MAX_X);
+    int rnd_spawny = rng.get_int(MIN_Y,MAX_Y);
+
     bn::sprite_ptr player = bn::sprite_items::player.create_sprite(START_X, START_Y);
     bn::sprite_ptr treasure = bn::sprite_items::treasure.create_sprite(0, 0);
 
@@ -326,10 +330,8 @@ int main()
         if (score >= 3)
         {
             // Spawn diamond within the bounds of the screen
-            int new_x = rng.get_int(MIN_X, MAX_X);
-            int new_y = rng.get_int(MIN_Y, MAX_Y);
 
-            diamond.set_position(new_x, new_y);
+            diamond.set_position(0, 0);
         }
 
         rng.update();
