@@ -70,7 +70,7 @@ int main()
     int score = 0;
     int speedBoost = 3;
 
-    //Background music
+    // Background music
     bn::music_items::cavern.play(0.1);
 
     // Will hold the timer for the speed boost.
@@ -210,7 +210,39 @@ int main()
         // Update speed boost display
         bn::string<MAX_BOOST_CHARS> boost_string = bn::to_string<MAX_BOOST_CHARS>(speedBoost);
         speed_boost_sprites.clear();
-        text_generator.generate(BOOST_X,BOOST_Y, boost_string,speed_boost_sprites);
+        text_generator.generate(BOOST_X, BOOST_Y, boost_string, speed_boost_sprites);
+
+        // If the player score is a multiple of 5, add a snake
+        if (score == 5)
+        {
+            // Spawn in the snake within the bounds of the screen
+            snake.set_position(snk_x, snk_y);
+        }
+        else if (score == 10)
+            // {
+            //     snake.set_position(snk_x, snk_y);
+            //     snake_2.set_position(snk_x, snk_y);
+            // }
+            // else if (score < 15)
+            // {
+            //     snake.set_position(snk_x, snk_y);
+            //     snake_2.set_position(snk_x, snk_y);
+            //     snake_3.set_position(snk_x, snk_y);
+            // }
+
+            // switch (score)
+            // {
+            // case 5:
+            //     snake.set_position(snk_x, snk_y);
+            //     break;
+            // case 10:
+            //     snake.set_position(snk_x, snk_y);
+            //     snake_2.set_position(snk_x, snk_y);
+            //     break;
+            // case (score > 15):
+
+            // default:
+            //     break;
 
             // Update RNG seed every frame so we don't get the same sequence of positions every time
             rng.update();
@@ -218,8 +250,3 @@ int main()
         bn::core::update();
     }
 }
-
-void make_snake()
-{
-    bn::sprite_ptr snake = bn::sprite_items::snake.create_sprite();
-};
