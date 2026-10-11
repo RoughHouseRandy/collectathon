@@ -73,7 +73,7 @@ int main()
     bn::core::init();
     // Set game timer to true
     game_timer_running = true;
-    
+
     // Background image
     bn::regular_bg_ptr bg = bn::regular_bg_items::cavebackground.create_bg(0, 0);
 
@@ -132,7 +132,9 @@ int main()
 
     while (true)
     {
+        // Start the game timer
         game_timer++;
+
         // tracks the coordinate for x and y.
         int current_x = player.x().round_integer();
         int current_y = player.y().round_integer();
@@ -162,6 +164,7 @@ int main()
             treasure.set_position(0, 0);
             diamond.set_position(320, 320);
             speedBoost = 3; // Reset the speed boost
+            game_timer = 0; // Reset the game timer
         }
 
         // When the A button is pressed apply a speed boost that lasts 5 seconds
@@ -303,6 +306,15 @@ int main()
             }
         }
 
+        // Win condition - If player score gets to 30
+        if (score == 30)
+        {
+            text_generator.generate(0, 0, "You Win!", text_sprites);
+        } else if (game_timer >= 1800) {
+            text_generator.generate(0, 0, "You Lose!", text_sprites);
+            bn::backdrop::set_color(bn::color(0x0210));
+        }
+
         // Update score display
         bn::string<MAX_SCORE_CHARS> score_string = bn::to_string<MAX_SCORE_CHARS>(score);
         score_sprites.clear();
@@ -315,7 +327,7 @@ int main()
         speed_boost_sprites.clear();
         text_generator.generate(BOOST_X, BOOST_Y, boost_string, speed_boost_sprites);
 
-        // Update the display for the timer
+        // Update the display for the timer. Divide fps by 60 to get seconds
         bn::string<MAX_SECONDS> timer_string = bn::to_string<MAX_SECONDS>(game_timer / 60);
         timer_sprites.clear();
         text_generator.generate(TIME_X, TIME_Y, timer_string, timer_sprites);
