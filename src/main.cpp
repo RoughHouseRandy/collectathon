@@ -59,6 +59,10 @@ static constexpr int BOOST_Y = -60;
 static constexpr int START_X = 0;
 static constexpr int START_Y = 50;
 
+// Game timer - Keep track of how long the game has been running.
+int game_timer = 0;
+bool game_timer_running = false;
+
 int main()
 {
     bn::core::init();
@@ -75,22 +79,30 @@ int main()
     // Will hold the sprites for boosts
     bn::vector<bn::sprite_ptr, MAX_BOOST_CHARS> speed_boost_sprites = {};
 
-    // Disp;ay text for the score and boosts
-    bn::vector<bn::sprite_ptr, 32> text_sprites;
+    // Display text for the score, timer and boosts
+    bn::vector<bn::sprite_ptr, 32> text_sprites; // Vector for generated text
     text_generator.generate(45, -70, "Score:", text_sprites);
     text_generator.generate(45, -60, "Boosts:", text_sprites);
+    text_generator.generate(-115, -70, "Time:", text_sprites);
 
     int score = 0;
     int speedBoost = 3;
 
     // Background music
-    bn::music_items::cavern.play(0.1);
+    bn::music_items::cavern.play(0.5);
 
     // Will hold the timer for the speed boost.
     int speed_boost_timer = 0;
     bool speed_boost_active = false;
     int debuff_timer = 0;
     bool debuff_active = false;
+
+    // Set game timer to true
+    //  game_timer_running = true;
+
+    // while(game_timer_running = true) {
+    //     game_timer++;
+    // }
 
     // Variables for the spawn coordinates for the snakes
     int snk_x = 0;
@@ -198,7 +210,7 @@ int main()
             score++;
         }
 
-        //Flags used to check which snake is touched
+        // Flags used to check which snake is touched
         bool touch_snake = player_rect.intersects(snake_rect);
         bool touch_snake_2 = player_rect.intersects(snake_2_rect);
         bool touch_snake_3 = player_rect.intersects(snake_3_rect);
@@ -219,7 +231,6 @@ int main()
             {
                 snk_2_x = rng.get_int(MIN_X, MAX_X);
                 snk_2_y = rng.get_int(MIN_Y, MAX_Y);
-
                 snake_2.set_position(300, 200); // Move the snake once touched
             }
             if (touch_snake_3)
