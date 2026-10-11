@@ -57,7 +57,7 @@ static constexpr int BOOST_X = 105;
 static constexpr int BOOST_Y = -60;
 
 // Timer location
-static constexpr int TIME_X = -80;
+static constexpr int TIME_X = -75;
 static constexpr int TIME_Y = -70;
 
 // Player spawn location
@@ -71,7 +71,9 @@ bool game_timer_running = false;
 int main()
 {
     bn::core::init();
-
+    // Set game timer to true
+    game_timer_running = true;
+    
     // Background image
     bn::regular_bg_ptr bg = bn::regular_bg_items::cavebackground.create_bg(0, 0);
 
@@ -104,13 +106,6 @@ int main()
     int debuff_timer = 0;
     bool debuff_active = false;
 
-    // Set game timer to true
-    //  game_timer_running = true;
-
-    // while(game_timer_running = true) {
-    //     game_timer++;
-    // }
-
     // Variables for the spawn coordinates for the snakes
     int snk_x = 0;
     int snk_2_x = 0;
@@ -137,6 +132,7 @@ int main()
 
     while (true)
     {
+        game_timer++;
         // tracks the coordinate for x and y.
         int current_x = player.x().round_integer();
         int current_y = player.y().round_integer();
@@ -320,7 +316,7 @@ int main()
         text_generator.generate(BOOST_X, BOOST_Y, boost_string, speed_boost_sprites);
 
         // Update the display for the timer
-        bn::string<MAX_SECONDS> timer_string = bn::to_string<MAX_SECONDS>(game_timer);
+        bn::string<MAX_SECONDS> timer_string = bn::to_string<MAX_SECONDS>(game_timer / 60);
         timer_sprites.clear();
         text_generator.generate(TIME_X, TIME_Y, timer_string, timer_sprites);
 
