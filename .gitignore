@@ -56,3 +56,9 @@ build
 
 #VS Code ol
 .vscode
+
+#graphics
+snake.aseprite
+snek.bmp
+snek.json
+snek.aseprite
