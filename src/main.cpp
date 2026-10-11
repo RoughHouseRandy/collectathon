@@ -46,12 +46,12 @@ static constexpr int MAX_SCORE_CHARS = 11;
 static constexpr int MAX_BOOST_CHARS = 1;
 
 // Score location
-static constexpr int SCORE_X = 70;
+static constexpr int SCORE_X = 105;
 static constexpr int SCORE_Y = -70;
 
 // Boost location
 
-static constexpr int BOOST_X = 70;
+static constexpr int BOOST_X = 105;
 static constexpr int BOOST_Y = -60;
 
 // Player spawn location
@@ -74,6 +74,11 @@ int main()
     // Will hold the sprites for boosts
     bn::vector<bn::sprite_ptr, MAX_BOOST_CHARS> speed_boost_sprites = {};
 
+    // Disp;ay text for the score and boosts
+    bn::vector<bn::sprite_ptr, 32> text_sprites;
+    text_generator.generate(45, -70, "Score:", text_sprites);
+    text_generator.generate(45, -60, "Boosts:", text_sprites);
+
     int score = 0;
     int speedBoost = 3;
 
@@ -94,9 +99,10 @@ int main()
 
     bn::sprite_ptr player = bn::sprite_items::player.create_sprite(START_X, START_Y);
     bn::sprite_ptr treasure = bn::sprite_items::treasure.create_sprite(0, 0);
+
     // Start the snakes out of bounds. With the scroll loop logic, the player will not touch it here.
     bn::sprite_ptr snake = bn::sprite_items::snake.create_sprite(300, 300);
-    bn::sprite_ptr snake_2 = bn::sprite_items::snake_2.create_sprite(0, 0);
+    bn::sprite_ptr snake_2 = bn::sprite_items::snake_2.create_sprite(300, 300);
     // bn::sprite_ptr snake_3 = bn::sprite_items::snake.create_sprite(300, 300);
     // Spawn a more valuable treasure to allow for double points
     bn::sprite_ptr diamond = bn::sprite_items::diamond.create_sprite(320,320);
@@ -128,7 +134,7 @@ int main()
             // When the start button is pressed - reset the position of treasure, score, and player
             score = 0;
             player.set_position(START_X, START_Y);
-            snake.set_position(300,300);
+            snake.set_position(300, 300);
             treasure.set_position(0, 0);
             diamond.set_position(320,320);
             speedBoost = 3; // Reset the speed boost
@@ -199,7 +205,6 @@ int main()
             debuff_active = true;
             debuff_timer = 0;
             score--;
-
         }
 
         //If the player intersects with the diamond, add 2 points to the player
@@ -240,12 +245,12 @@ int main()
             }
         }
 
-        //If debuff is active, the player slows down
-        if(debuff_active)
+        // If debuff is active, the player slows down
+        if (debuff_active)
         {
             current_speed = SPEED - 1;
             debuff_timer++;
-            if(debuff_timer == 120)
+            if (debuff_timer == 120)
             {
                 debuff_active = false;
                 current_speed = SPEED;
