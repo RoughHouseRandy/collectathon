@@ -16,6 +16,8 @@
 #include "bn_sprite_items_treasure.h"
 #include "bn_sprite_items_snake.h"
 #include "bn_sprite_items_snake_2.h"
+#include "bn_sprite_items_snake_3.h"
+#include "bn_sprite_items_diamond.h"
 #include "common_fixed_8x16_font.h"
 #include "bn_sound_items.h"
 #include "bn_music_items.h"
@@ -91,8 +93,11 @@ int main()
     // Variables for the spawn coordinates for the snakes
     int snk_x = 0;
     int snk_2_x = 0;
+    int snk_3_x = 0;
+
     int snk_y = 0;
     int snk_2_y = 0;
+    int snk_3_y = 0;
 
     bn::sprite_ptr player = bn::sprite_items::player.create_sprite(START_X, START_Y);
     bn::sprite_ptr treasure = bn::sprite_items::treasure.create_sprite(0, 0);
@@ -100,9 +105,10 @@ int main()
     // Start the snakes out of bounds. With the scroll loop logic, the player will not touch it here.
     bn::sprite_ptr snake = bn::sprite_items::snake.create_sprite(300, 300);
     bn::sprite_ptr snake_2 = bn::sprite_items::snake_2.create_sprite(300, 300);
-    // bn::sprite_ptr snake_3 = bn::sprite_items::snake.create_sprite(300, 300);
+    bn::sprite_ptr snake_3 = bn::sprite_items::snake_3.create_sprite(300, 300);
+
     // Spawn a more valuable treasure to allow for double points
-    bn::sprite_ptr diamond = bn::sprite_items::diamond.create_sprite(320,320);
+    bn::sprite_ptr diamond = bn::sprite_items::diamond.create_sprite(320, 320);
 
     while (true)
     {
@@ -160,9 +166,15 @@ int main()
                                        snake.y().round_integer(),
                                        SNAKE_SIZE.width(),
                                        SNAKE_SIZE.height());
-        // The bounding box of the snake debuff
+        // The bounding box of the snake_2 debuff
         bn::rect snake_2_rect = bn::rect(snake_2.x().round_integer(),
                                          snake_2.y().round_integer(),
+                                         SNAKE_SIZE.width(),
+                                         SNAKE_SIZE.height());
+
+        // The bounding box of the snake_3 debuff
+        bn::rect snake_3_rect = bn::rect(snake_3.x().round_integer(),
+                                         snake_3.y().round_integer(),
                                          SNAKE_SIZE.width(),
                                          SNAKE_SIZE.height());
 
@@ -178,19 +190,37 @@ int main()
             score++;
         }
 
+        //Flags used to check which snake is touched
+        bool touch_snake = player_rect.intersects(snake_rect);
+        bool touch_snake_2 = player_rect.intersects(snake_2_rect);
+        bool touch_snake_3 = player_rect.intersects(snake_3_rect);
+
         // If the player's bounding box hits the snake, remove a point from the player
-        if (player_rect.intersects(snake_rect) || player_rect.intersects(snake_2_rect))
+        if (player_rect.intersects(snake_rect) || player_rect.intersects(snake_2_rect) || player_rect.intersects(snake_3_rect))
         {
             // Play the snake rattle
             bn::sound_items::rattlesnake.play();
             // Set the random spawn coordinates for the snake
-            snk_x = rng.get_int(MIN_X, MAX_X);
-            snk_y = rng.get_int(MIN_Y, MAX_Y);
-            snk_2_y = rng.get_int(MIN_X, MAX_X);
-            snk_2_y = rng.get_int(MIN_Y, MAX_Y);
-            // Move the snake once touched
-            snake.set_position(snk_x, snk_y);
-            snake_2.set_position(300, 200);
+            if (touch_snake)
+            {
+                snk_x = rng.get_int(MIN_X, MAX_X);
+                snk_y = rng.get_int(MIN_Y, MAX_Y);
+                snake.set_position(snk_x, snk_y); // Move the snake once touched
+            }
+            if (touch_snake_2)
+            {
+                snk_2_x = rng.get_int(MIN_X, MAX_X);
+                snk_2_y = rng.get_int(MIN_Y, MAX_Y);
+
+                snake_2.set_position(300, 200); // Move the snake once touched
+            }
+            if (touch_snake_3)
+            {
+                snk_3_x = rng.get_int(MIN_X, MAX_X);
+                snk_3_y = rng.get_int(MIN_Y, MAX_Y);
+                snake_3.set_position(300, 200); // Move the snake once touched
+            }
+
             // Reduce the player score and start debuff/debuff timer
             debuff_active = true;
             debuff_timer = 0;
@@ -259,6 +289,10 @@ int main()
             if (score >= 10)
             {
                 snake_2.set_position(snk_2_x, snk_2_y);
+                if (score >= 15)
+                {
+                    snake_3.set_position(snk_3_x, snk_3_y);
+                }
             }
         }
 
