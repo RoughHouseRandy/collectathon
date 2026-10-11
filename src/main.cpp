@@ -103,8 +103,12 @@ int main()
     // Will hold the timer for the speed boost.
     int speed_boost_timer = 0;
     bool speed_boost_active = false;
+    //Will hold the timer for debuff
     int debuff_timer = 0;
     bool debuff_active = false;
+    //Will hold the interval for spawning diamond
+    int diamond_interval = 0;
+    bool diamond_interval_activated = false;
 
     // Variables for the spawn coordinates for the snakes
     int snk_x = 0;
@@ -115,9 +119,6 @@ int main()
     int snk_2_y = 0;
     int snk_3_y = 0;
 
-    // random spawn
-    int rnd_spawnx = rng.get_int(MIN_X, MAX_X);
-    int rnd_spawny = rng.get_int(MIN_Y, MAX_Y);
 
     bn::sprite_ptr player = bn::sprite_items::player.create_sprite(START_X, START_Y);
     bn::sprite_ptr treasure = bn::sprite_items::treasure.create_sprite(0, 0);
@@ -138,6 +139,8 @@ int main()
         // tracks the coordinate for x and y.
         int current_x = player.x().round_integer();
         int current_y = player.y().round_integer();
+
+
         // Move player with d-pad
         if (bn::keypad::left_held())
         {
@@ -261,7 +264,12 @@ int main()
         {
             bn::sound_items::sparkle.play();
             score += 2;
-            diamond.set_position(320, 320);
+            // random spawn
+            int rnd_spawnx = rng.get_int(MIN_X, MAX_X);
+            int rnd_spawny = rng.get_int(MIN_Y, MAX_Y);
+            diamond.set_position(rnd_spawnx, rnd_spawny);
+            diamond_interval = 0;
+            diamond_interval_activated = true;
         }
 
         // If the player is outside the bounds of the screen, they loop to the other side
@@ -347,11 +355,18 @@ int main()
             }
         }
 
-        if (score >= 3)
+        if(score == 3)
         {
-            // Spawn diamond within the bounds of the screen
-
-            diamond.set_position(0, 0);
+            diamond.set_position(0,0);
+        }
+        if(diamond_interval_activated)
+        {
+            diamond_interval++;
+            if(diamond_interval == 240)
+            {
+                diamond.set_position(320, 320);
+                diamond_interval_activated = false;
+            }
         }
 
         rng.update();
