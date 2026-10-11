@@ -32,6 +32,10 @@ increase the spawn of debuffs.
 a conditional: if(player has 0 speed boosts && player current_score > 3){spawn a buff}
 - Add more treasures with extra point values.
 
+10/11/26
+- add a timer interval for spawning boost refills. 
+- add a way to activate diamond spawn.
+
 10/7/26
 Changing the music up upon a certain, score threshold - Russell.
 Adding a more dyanmic sprite. - Both.
