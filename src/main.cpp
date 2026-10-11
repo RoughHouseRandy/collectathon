@@ -45,15 +45,20 @@ static constexpr int MAX_X = bn::display::width() / 2;
 static constexpr int MAX_SCORE_CHARS = 11;
 // Number of boosts is only set to 3. The characters required to show this should be 1
 static constexpr int MAX_BOOST_CHARS = 1;
+// Timer
+static constexpr int MAX_SECONDS = 3;
 
 // Score location
 static constexpr int SCORE_X = 105;
 static constexpr int SCORE_Y = -70;
 
 // Boost location
-
 static constexpr int BOOST_X = 105;
 static constexpr int BOOST_Y = -60;
+
+// Timer location
+static constexpr int TIME_X = -75;
+static constexpr int TIME_Y = -70;
 
 // Player spawn location
 static constexpr int START_X = 0;
@@ -66,6 +71,8 @@ bool game_timer_running = false;
 int main()
 {
     bn::core::init();
+    // Set game timer to true
+    game_timer_running = true;
 
     // Background image
     bn::regular_bg_ptr bg = bn::regular_bg_items::cavebackground.create_bg(0, 0);
@@ -83,6 +90,8 @@ int main()
     bn::vector<bn::sprite_ptr, 32> text_sprites; // Vector for generated text
     text_generator.generate(45, -70, "Score:", text_sprites);
     text_generator.generate(45, -60, "Boosts:", text_sprites);
+
+    bn::vector<bn::sprite_ptr, MAX_SECONDS> timer_sprites = {};
     text_generator.generate(-115, -70, "Time:", text_sprites);
 
     int score = 0;
@@ -100,13 +109,6 @@ int main()
     //Will hold the interval for spawning diamond
     int diamond_interval = 0;
     bool diamond_interval_activated = false;
-
-    // Set game timer to true
-    //  game_timer_running = true;
-
-    // while(game_timer_running = true) {
-    //     game_timer++;
-    // }
 
     // Variables for the spawn coordinates for the snakes
     int snk_x = 0;
@@ -130,6 +132,8 @@ int main()
 
     while (true)
     {
+        // Start the game timer
+        game_timer++;
 
         // tracks the coordinate for x and y.
         int current_x = player.x().round_integer();
@@ -162,6 +166,7 @@ int main()
             treasure.set_position(0, 0);
             diamond.set_position(320, 320);
             speedBoost = 3; // Reset the speed boost
+            game_timer = 0; // Reset the game timer
         }
 
         // When the A button is pressed apply a speed boost that lasts 5 seconds
@@ -308,6 +313,15 @@ int main()
             }
         }
 
+        // Win condition - If player score gets to 30
+        if (score == 30)
+        {
+            text_generator.generate(0, 0, "You Win!", text_sprites);
+        } else if (game_timer >= 1800) {
+            text_generator.generate(0, 0, "You Lose!", text_sprites);
+            bn::backdrop::set_color(bn::color(0x0210));
+        }
+
         // Update score display
         bn::string<MAX_SCORE_CHARS> score_string = bn::to_string<MAX_SCORE_CHARS>(score);
         score_sprites.clear();
@@ -319,6 +333,11 @@ int main()
         bn::string<MAX_BOOST_CHARS> boost_string = bn::to_string<MAX_BOOST_CHARS>(speedBoost);
         speed_boost_sprites.clear();
         text_generator.generate(BOOST_X, BOOST_Y, boost_string, speed_boost_sprites);
+
+        // Update the display for the timer. Divide fps by 60 to get seconds
+        bn::string<MAX_SECONDS> timer_string = bn::to_string<MAX_SECONDS>(game_timer / 60);
+        timer_sprites.clear();
+        text_generator.generate(TIME_X, TIME_Y, timer_string, timer_sprites);
 
         // If the player score is a multiple of 5, add a snake
         if (score >= 5)
