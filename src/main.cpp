@@ -80,6 +80,8 @@ int main()
     // Will hold the timer for the speed boost.
     int speed_boost_timer = 0;
     bool speed_boost_active = false;
+    int debuff_timer = 0;
+    bool debuff_active = false;
 
     // Variables for the spawn coordinates for the snakes
     int snk_x = 0;
@@ -121,6 +123,7 @@ int main()
             // When the start button is pressed - reset the position of treasure, score, and player
             score = 0;
             player.set_position(START_X, START_Y);
+            snake.set_position(300,300);
             treasure.set_position(0, 0);
             speedBoost = 3; // Reset the speed boost
         }
@@ -177,11 +180,14 @@ int main()
             snk_y = rng.get_int(MIN_Y, MAX_Y);
             snk_2_y = rng.get_int(MIN_X, MAX_X);
             snk_2_y = rng.get_int(MIN_Y, MAX_Y);
-            // Move the snake outside of the screen
-            snake.set_position(300, 200);
+            // Move the snake once touched
+            snake.set_position(snk_x, snk_y);
             snake_2.set_position(300, 200);
-            // Reduce the player score
+            // Reduce the player score and start debuff/debuff timer
+            debuff_active = true;
+            debuff_timer = 0;
             score--;
+
         }
 
         // If the player is outside the bounds of the screen, they loop to the other side
@@ -210,6 +216,18 @@ int main()
             if (speed_boost_timer == 180)
             {
                 speed_boost_active = false;
+                current_speed = SPEED;
+            }
+        }
+
+        //If debuff is active, the player slows down
+        if(debuff_active)
+        {
+            current_speed = SPEED - 1;
+            debuff_timer++;
+            if(debuff_timer == 120)
+            {
+                debuff_active = false;
                 current_speed = SPEED;
             }
         }
