@@ -18,6 +18,8 @@
 #include "common_fixed_8x16_font.h"
 #include "bn_sound_items.h"
 #include "bn_music_items.h"
+#include "bn_regular_bg_items_cavebackground.h"
+#include "bn_regular_bg_ptr.h"
 
 // Pixels / Frame player moves at
 static constexpr bn::fixed SPEED = 1.5;
@@ -57,7 +59,9 @@ int main()
     bn::core::init();
     // Background color
     bn::backdrop::set_color(bn::color(0x0210));
-
+    // bn::regular_bg_items::cavebackground.create_bg(0,0);
+    bn::regular_bg_ptr bg = bn::regular_bg_items::cavebackground.create_bg(0, 0);
+    
     bn::random rng = bn::random();
     bn::fixed current_speed = SPEED;
     // Will hold the sprites for the score
