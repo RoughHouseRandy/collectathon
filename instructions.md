@@ -153,6 +153,99 @@ Again, ALL PARTNERS SHOULD BE ADDING COMMITING AND PUSHING FREQUENTLY.
 
 Repeat the above to make AT LEAST 3 changes. Try to get more ambitious as you go: start with small changes and work your way up to bigger ones. For this part it is OK to work separately from your partner (or together if you prefer). Just make sure you coordinate! Consider playing on the real GBA as you develop.
 
+## Wave 6.5: Custom Graphics
+In this wave you will be using LibreSprite to make new graphics for your game.
+
+### Making a new file
+1. Open LibreSprite
+1. Choose file > new.
+1. MAKE SURE TO DO THE FOLLOWING SETTINGS:
+    1. Width: 16
+    1. Height: 16
+    1. Color Mode: Indexed (THIS IS VERY IMPORANT)
+    1. Background: White
+
+### Making a simple sprite
+1. Choose a color from the palette on the left. For now, do NOT choose the top-left color.
+1. Choose the pencil tool and draw a sprite. Do something simple for now, you can come back and make it nicer later. You may wish to zoom in to make things easier.
+1. Choose File > Save As and do the following:
+    1. Find the `graphics` directory for collectathon
+    1. Change the "File Type" to "aseprite files"
+    1. Change the file name to something that describes your sprite. DO NOT USE ANYTHING OTHER THAN LOWERCASE LETTERS
+    1. Click OK
+When we save it in this way we're saving the fancy editable version of the sprite. Make sure to be editing the aseprite version of the file in future edits, NOT the BMP we are about to make. This will be important in the future when we make animations.
+
+### Exporting the sprite
+Butano needs a special type of BMP, not the aseprite file you just created. We need to export the aseprite file into a BMP.
+1. Click File > Export Sprite Sheet and choose the following
+    1. Sheet Type: Vertical Strip
+    1. No padding (padding should be UNchecked)
+    1. Layers: Visible Layers
+    1. Frames: All frames
+    1. Output File: Make sure it is checked, then click on Select file
+        1. CHANGE THE FILE TYPE to bmp files first
+        1. Then choose the folder for the graphics directory of collectathon
+    1. JSON Data: unchecked
+    1. Open generated sprite sheet: Unchecked
+    1. Then click Export
+
+Come back to VS Code. You should see both the .aseprite and the .bmp files in the graphics directory.
+
+### Creating a JSON file
+1. In the graphics directory, make a new JSON file named yoursprite.json (where "yoursprite" is replaced by the name of your sprite)
+1. In the file, write the following:
+    ```
+    {
+        "type": "sprite"
+    }
+    ```
+    (Later we will need to add more, particularly for animated sprites. But this is enough for now)
+
+### Compiling the graphics
+Run `make` to make your game. You should see it describe finding and processing your bmp.  If there are errors, or it does not find your bmp address them now. A few common errors:
+- You MUST use a valid name. For now, just stick to lowercase letters.
+- You MUST have a sprite in an allowed size. For now, stick to 8x8, 16x16, or 32x32.
+- You MUST have a valid JSON file that matches the name exactly.
+- You MUST have the bmp and json in the graphics directory.
+- You MUST have a bmp with the right format. It is a difficult format to achieve in most editors, that is why we're using LibreSprite.
+
+Nothing will be changed in your game yet, but the bmp will have been turned into a format Butano can use. Add/commit/push
+
+### Importing and using your sprite
+Go back to `main.cpp`.
+1. Add a new include (replace yoursprite with the name of your sprite)
+    ```
+    #include "bn_sprite_items_yoursprite.h"
+    ```
+1. In main, before your while loop create an instance of your sprite: (replace yoursprite with the name of your sprite)
+    ```bn::sprite_ptr yoursprite = bn::sprite_items::yoursprite.create_sprite();```
+1. Make your game again and run the ROM. You should see your sprite in the middle of the screen.
+
+Add/commit/push
+
+### Setting the transparent color
+Your sprite will have a white square around it instead of a transparent background. Let's fix that. The GBA treats the first color in the palette as the transparent background, so we'll edit that.
+1. Open the .aseprite version of your file.
+1. Select a color from the palette that you do not wish to use. This will be our background color. Click on it.
+1. Move your mouse to the edge of that color and the icon will change. Click and drag the color to the top left (idx-0). The colors of your sprite will change temporarily. This is OK!
+1. Click "Remap". This should set the colors back to normal.
+1. Select the transparent color in the top left. Use the paint bucket to fill in the background to make it transparent.
+
+### Resaving and exporting
+1. Save your aseprite file by choosing File > Save.
+1. Export the bmp again, using the same settings as before. Double check the settings! If it asks if it's ok to overwrite, say yes.
+1. Go back to VS Code and `make` your game again.
+1. Run the game again and you should see the new version of your sprite!
+
+Add/commit/push
+
+### Next partner
+Have the other partner follow the same steps to make a sprite of their own! Add/commit/push.
+
+### Making it useful
+Replace graphics in your game as desired. Replace the dot, the square, and anything else you'd like to make. Add/commit/push as you go!
+
+
 ## Wave 7: Polishing
 
 ### Playtesting
