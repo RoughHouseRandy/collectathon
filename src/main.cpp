@@ -33,7 +33,7 @@ static constexpr int MAX_X = bn::display::width() / 2;
 
 // Number of characters required to show the longest numer possible in an int (-2147483647)
 static constexpr int MAX_SCORE_CHARS = 11;
-//Number of boosts is only set to 3. The characters required to show this should be 1
+// Number of boosts is only set to 3. The characters required to show this should be 1
 static constexpr int MAX_BOOST_CHARS = 1;
 
 // Score location
@@ -67,7 +67,7 @@ int main()
     int score = 0;
     int speedBoost = 3;
 
-    //Background music
+    // Background music
     bn::music_items::cavern.play(0.1);
 
     // Will hold the timer for the speed boost.
@@ -176,11 +176,11 @@ int main()
         text_generator.generate(SCORE_X, SCORE_Y,
                                 score_string,
                                 score_sprites);
-                                
+
         // Update speed boost display
         bn::string<MAX_BOOST_CHARS> boost_string = bn::to_string<MAX_BOOST_CHARS>(speedBoost);
         speed_boost_sprites.clear();
-        text_generator.generate(BOOST_X,BOOST_Y, boost_string,speed_boost_sprites);
+        text_generator.generate(BOOST_X, BOOST_Y, boost_string, speed_boost_sprites);
 
         // Update RNG seed every frame so we don't get the same sequence of positions every time
         rng.update();
