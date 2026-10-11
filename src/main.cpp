@@ -101,6 +101,8 @@ int main()
     bn::sprite_ptr snake = bn::sprite_items::snake.create_sprite(300, 300);
     bn::sprite_ptr snake_2 = bn::sprite_items::snake_2.create_sprite(300, 300);
     // bn::sprite_ptr snake_3 = bn::sprite_items::snake.create_sprite(300, 300);
+    // Spawn a more valuable treasure to allow for double points
+    bn::sprite_ptr diamond = bn::sprite_items::diamond.create_sprite(320,320);
 
     while (true)
     {
