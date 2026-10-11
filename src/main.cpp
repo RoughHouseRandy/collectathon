@@ -117,7 +117,6 @@ int main()
     int snk_2_y = 0;
     int snk_3_y = 0;
 
-
     bn::sprite_ptr player = bn::sprite_items::player.create_sprite(START_X, START_Y);
     bn::sprite_ptr treasure = bn::sprite_items::treasure.create_sprite(0, 0);
 
