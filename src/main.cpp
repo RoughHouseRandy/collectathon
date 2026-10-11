@@ -16,6 +16,7 @@
 #include "bn_sprite_items_treasure.h"
 #include "bn_sprite_items_snake.h"
 #include "bn_sprite_items_snake_2.h"
+#include "bn_sprite_items_diamond.h"
 #include "common_fixed_8x16_font.h"
 #include "bn_sound_items.h"
 #include "bn_music_items.h"
@@ -30,6 +31,8 @@ static constexpr bn::size PLAYER_SIZE = {8, 8};
 static constexpr bn::size TREASURE_SIZE = {8, 8};
 // Width and height of the snake debuff bounding box
 static constexpr bn::size SNAKE_SIZE = {8, 8};
+// Width and heigh of the diamond
+static constexpr bn::size DIAMOND_SIZE = {8, 8};
 
 // Full bounds of the screen
 static constexpr int MIN_Y = -bn::display::height() / 2;
@@ -127,6 +130,7 @@ int main()
             player.set_position(START_X, START_Y);
             snake.set_position(300,300);
             treasure.set_position(0, 0);
+            diamond.set_position(320,320);
             speedBoost = 3; // Reset the speed boost
         }
 
@@ -160,6 +164,12 @@ int main()
                                          SNAKE_SIZE.width(),
                                          SNAKE_SIZE.height());
 
+        // The bounding box of the diamond
+        bn::rect diamond_rect = bn::rect(diamond.x().round_integer(),
+                                    diamond.y().round_integer(),
+                                    DIAMOND_SIZE.width(),
+                                    DIAMOND_SIZE.height());
+
         // If the bounding boxes overlap, set the treasure to a new location an increase score
         if (player_rect.intersects(treasure_rect))
         {
@@ -190,6 +200,14 @@ int main()
             debuff_timer = 0;
             score--;
 
+        }
+
+        //If the player intersects with the diamond, add 2 points to the player
+        if(player_rect.intersects(diamond_rect))
+        {
+            bn::sound_items::sparkle.play();
+            score += 2;
+            diamond.set_position(320, 320);
         }
 
         // If the player is outside the bounds of the screen, they loop to the other side
@@ -255,6 +273,15 @@ int main()
             {
                 snake_2.set_position(snk_2_x, snk_2_y);
             }
+        }
+
+        if(score >= 3)
+        {
+            //Spawn diamond within the bounds of the screen
+            int new_x = rng.get_int(MIN_X, MAX_X);
+            int new_y = rng.get_int(MIN_Y, MAX_Y);
+
+            diamond.set_position(new_x,new_y);
         }
 
         rng.update();
