@@ -24,6 +24,7 @@
 #include "bn_music_items.h"
 #include "bn_music.h"
 #include "bn_regular_bg_items_cavebackground.h"
+#include "bn_regular_bg_items_victory.h"
 #include "bn_regular_bg_ptr.h"
 
 // Pixels / Frame player moves at
@@ -178,7 +179,7 @@ int main()
         {
             // Clear the HUD
             text_sprites.clear();
-
+            bg = bn::regular_bg_items::cavebackground.create_bg(0,0);
             // When the start button is pressed - reset the position of treasure, score, and player
             player.set_position(START_X, START_Y);
             snake.set_position(300, 300);
@@ -191,10 +192,10 @@ int main()
             text_generator.generate(45, -70, "Score:", text_sprites);
             text_generator.generate(45, -60, "Boosts:", text_sprites);
             text_generator.generate(-115, -70, "Time:", text_sprites);
-            score = 0;      // Reset the score
-            speedBoost = 3; // Reset the speed boost
-            game_timer = 0; // Reset the game timer
-            next_boost_score = 2; //Reset the score to spawn boost
+            score = 0;              // Reset the score
+            speedBoost = 3;         // Reset the speed boost
+            game_timer = 0;         // Reset the game timer
+            next_boost_score = 2;   // Reset the score to spawn boost
             next_diamond_score = 3; // Reset the score to spawn diamond
 
             // Start the bgm again
@@ -439,10 +440,11 @@ int main()
         if (score >= 5)
         {
             // Clear all the sprites vectors to clear the screen
+            bg = bn::regular_bg_items::victory.create_bg(0,0);
             text_sprites.clear();
             timer_sprites.clear();
             speed_boost_sprites.clear();
-            bn::music::stop(); // Stop the bgm
+            bn::music::stop();                                        // Stop the bgm
             text_generator.generate(45, -70, "Score:", text_sprites); // Redisplay the score
             text_generator.generate(-30, 0, "You Win!", text_sprites);
             player.set_position(1000, 1000);
