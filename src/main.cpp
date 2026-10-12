@@ -18,6 +18,7 @@
 #include "bn_sprite_items_snake_2.h"
 #include "bn_sprite_items_snake_3.h"
 #include "bn_sprite_items_diamond.h"
+#include "bn_sprite_items_boostpotion.h"
 #include "common_fixed_8x16_font.h"
 #include "bn_sound_items.h"
 #include "bn_music_items.h"
@@ -34,6 +35,7 @@ static constexpr bn::size TREASURE_SIZE = {8, 8};
 static constexpr bn::size SNAKE_SIZE = {8, 8};
 // Width and heigh of the diamond
 static constexpr bn::size DIAMOND_SIZE = {8, 8};
+static constexpr bn::size BOOSTPOTION_SIZE = {8, 8};
 
 // Full bounds of the screen
 static constexpr int MIN_Y = -bn::display::height() / 2;
@@ -68,8 +70,7 @@ static constexpr int START_Y = 50;
 int game_timer = 0;
 bool game_timer_running = false;
 
-
-    int main()
+int main()
 {
     bn::core::init();
     // Set game timer to true
@@ -104,14 +105,16 @@ bool game_timer_running = false;
     // Will hold the timer for the speed boost.
     int speed_boost_timer = 0;
     bool speed_boost_active = false;
-    //Will hold the timer for debuff
+    // Will hold the timer for debuff
     int debuff_timer = 0;
     bool debuff_active = false;
-    //Will hold the interval for spawning diamond
+    // Will hold the interval for spawning diamond
     int diamond_timer = 0;
     bool diamond_activated = false;
-    //Will hold a score tracker to track intervals to spawn items
+    // Will hold a score tracker to track intervals to spawn items
     int next_diamond_score = 3;
+    // Will hold tracking for boost potion variables
+    
 
     // Variables for the spawn coordinates for the snakes
     int snk_x = 0;
@@ -124,7 +127,6 @@ bool game_timer_running = false;
 
     int diamond_x = 0;
     int diamond_y = 0;
-
 
     bn::sprite_ptr player = bn::sprite_items::player.create_sprite(START_X, START_Y);
     bn::sprite_ptr treasure = bn::sprite_items::treasure.create_sprite(0, 0);
@@ -145,7 +147,6 @@ bool game_timer_running = false;
         // tracks the coordinate for x and y.
         int current_x = player.x().round_integer();
         int current_y = player.y().round_integer();
-
 
         // Move player with d-pad
         if (bn::keypad::left_held())
@@ -325,7 +326,9 @@ bool game_timer_running = false;
         if (score == 30)
         {
             text_generator.generate(0, 0, "You Win!", text_sprites);
-        } else if (game_timer >= 1800) {
+        }
+        else if (game_timer >= 1800)
+        {
             text_generator.generate(0, 0, "You Lose!", text_sprites);
             bn::backdrop::set_color(bn::color(0x0210));
         }
@@ -361,21 +364,20 @@ bool game_timer_running = false;
                 }
             }
         }
-        //Activates diamond after score threshold is met.
-        if(!diamond_activated && score >= next_diamond_score)
+        // Activates diamond after score threshold is met.
+        if (!diamond_activated && score >= next_diamond_score)
         {
             diamond_x = rng.get_int(MIN_X, MAX_X);
-            diamond_y = rng.get_int(MIN_Y,MAX_Y);
-            diamond.set_position(diamond_x,diamond_y);
+            diamond_y = rng.get_int(MIN_Y, MAX_Y);
+            diamond.set_position(diamond_x, diamond_y);
             diamond_timer = 0;
             diamond_activated = true;
-
         }
-        //This sets a timer once the diamond is spawned and will despawn if not touched 
-        if(diamond_activated)
+        // This sets a timer once the diamond is spawned and will despawn if not touched
+        if (diamond_activated)
         {
             diamond_timer++;
-            if(diamond_timer == 240)
+            if (diamond_timer == 240)
             {
                 diamond.set_position(320, 320);
                 diamond_activated = false;
