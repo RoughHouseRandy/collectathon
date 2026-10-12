@@ -163,7 +163,7 @@ int main()
         }
         if (bn::keypad::start_pressed())
         {
-            // Create the HUD
+            // Clear the HUD
             text_sprites.clear();
 
             // When the start button is pressed - reset the position of treasure, score, and player
@@ -329,16 +329,15 @@ int main()
         }
 
         // Win condition - If player score gets to 30
-        if (score == 30)
+        if (score >= 10)
         {
             text_sprites.clear();
-            text_generator.generate(0, 0, "You Win!", text_sprites);
+            text_generator.generate(-30, 0, "You Win!", text_sprites);
         }
-        else if (game_timer >= 300)
+        else if (game_timer >= 1800)
         {
-            // 1800
             text_sprites.clear();
-            text_generator.generate(0, 0, "You Lose!", text_sprites);
+            text_generator.generate(-40, 0, "You Lose!", text_sprites);
         }
 
         // Update score display
