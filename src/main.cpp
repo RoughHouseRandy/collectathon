@@ -167,6 +167,7 @@ int main()
             text_sprites.clear();
 
             // When the start button is pressed - reset the position of treasure, score, and player
+            game_timer_running = true; // Start the timer again
             player.set_position(START_X, START_Y);
             snake.set_position(300, 300);
             snake_2.set_position(300, 300);
@@ -328,18 +329,6 @@ int main()
             }
         }
 
-        // Win condition - If player score gets to 30
-        if (score >= 10)
-        {
-            text_sprites.clear();
-            text_generator.generate(-30, 0, "You Win!", text_sprites);
-        }
-        else if (game_timer >= 1800)
-        {
-            text_sprites.clear();
-            text_generator.generate(-40, 0, "You Lose!", text_sprites);
-        }
-
         // Update score display
         bn::string<MAX_SCORE_CHARS> score_string = bn::to_string<MAX_SCORE_CHARS>(score);
         score_sprites.clear();
@@ -390,6 +379,28 @@ int main()
                 diamond.set_position(320, 320);
                 diamond_activated = false;
             }
+        }
+
+        // Win condition - If player score gets to 30
+        if (score >= 10)
+        {
+            // Clear all the sprites vectors to clear the screen
+            text_sprites.clear();
+            timer_sprites.clear();
+            speed_boost_sprites.clear();
+            text_generator.generate(45, -70, "Score:", text_sprites);
+            text_generator.generate(-30, 0, "You Win!", text_sprites); // Redisplay the score
+            text_generator.generate(-100, 10, "Press Start to play again!", text_sprites);
+        }
+        else if (game_timer >= 600)
+        {
+            // Clear all the sprites vectors to clear the screen 1800
+            text_sprites.clear();
+            timer_sprites.clear();
+            speed_boost_sprites.clear();
+            text_generator.generate(45, -70, "Score:", text_sprites); // Redisplay the score
+            text_generator.generate(-40, 0, "You Lose!", text_sprites);
+            text_generator.generate(-100, 10, "Press Start to play again!", text_sprites);
         }
 
         rng.update();
