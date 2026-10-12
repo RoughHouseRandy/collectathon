@@ -114,7 +114,6 @@ int main()
     // Will hold a score tracker to track intervals to spawn items
     int next_diamond_score = 3;
     // Will hold tracking for boost potion variables
-    
 
     // Variables for the spawn coordinates for the snakes
     int snk_x = 0;
@@ -167,14 +166,18 @@ int main()
         }
         if (bn::keypad::start_pressed())
         {
+            // Clear the HUD
+            text_sprites.clear();
+
             // When the start button is pressed - reset the position of treasure, score, and player
             score = 0;
             player.set_position(START_X, START_Y);
             snake.set_position(300, 300);
             treasure.set_position(0, 0);
             diamond.set_position(320, 320);
-            speedBoost = 3; // Reset the speed boost
-            game_timer = 0; // Reset the game timer
+            speedBoost = 3;         // Reset the speed boost
+            game_timer = 0;         // Reset the game timer
+            next_diamond_score = 3; // reset the threshold for the diamond spawner
         }
 
         // When the A button is pressed apply a speed boost that lasts 5 seconds
@@ -323,14 +326,15 @@ int main()
         }
 
         // Win condition - If player score gets to 30
-        if (score == 30)
+        if (score >= 10)
         {
-            text_generator.generate(0, 0, "You Win!", text_sprites);
+            text_sprites.clear();
+            text_generator.generate(-30, 0, "You Win!", text_sprites);
         }
         else if (game_timer >= 1800)
         {
-            text_generator.generate(0, 0, "You Lose!", text_sprites);
-            bn::backdrop::set_color(bn::color(0x0210));
+            text_sprites.clear();
+            text_generator.generate(-40, 0, "You Lose!", text_sprites);
         }
 
         // Update score display
