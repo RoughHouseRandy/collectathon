@@ -195,7 +195,7 @@ int main()
             speedBoost = 3; // Reset the speed boost
             game_timer = 0; // Reset the game timer
             next_boost_score = 2; //Reset the score to spawn boost
-            next_diamond_score = 2; // Reset the score to spawn diamond
+            next_diamond_score = 3; // Reset the score to spawn diamond
 
             // Start the bgm again
             bn::music_items::cavern.play(0.5);
