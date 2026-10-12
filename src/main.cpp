@@ -68,7 +68,8 @@ static constexpr int START_Y = 50;
 int game_timer = 0;
 bool game_timer_running = false;
 
-int main()
+
+    int main()
 {
     bn::core::init();
     // Set game timer to true
@@ -107,8 +108,10 @@ int main()
     int debuff_timer = 0;
     bool debuff_active = false;
     //Will hold the interval for spawning diamond
-    int diamond_interval = 0;
-    bool diamond_interval_activated = false;
+    int diamond_timer = 0;
+    bool diamond_activated = false;
+    //Will hold a score tracker to track intervals to spawn items
+    int next_diamond_score = 3;
 
     // Variables for the spawn coordinates for the snakes
     int snk_x = 0;
@@ -118,6 +121,10 @@ int main()
     int snk_y = 0;
     int snk_2_y = 0;
     int snk_3_y = 0;
+
+    int diamond_x = 0;
+    int diamond_y = 0;
+
 
     bn::sprite_ptr player = bn::sprite_items::player.create_sprite(START_X, START_Y);
     bn::sprite_ptr treasure = bn::sprite_items::treasure.create_sprite(0, 0);
@@ -259,7 +266,7 @@ int main()
         }
 
         // If the player intersects with the diamond, add 2 points to the player
-        if (player_rect.intersects(diamond_rect))
+        if (diamond_activated && player_rect.intersects(diamond_rect))
         {
             bn::sound_items::sparkle.play();
             score += 2;
@@ -267,8 +274,9 @@ int main()
             int rnd_spawnx = rng.get_int(MIN_X, MAX_X);
             int rnd_spawny = rng.get_int(MIN_Y, MAX_Y);
             diamond.set_position(rnd_spawnx, rnd_spawny);
-            diamond_interval = 0;
-            diamond_interval_activated = true;
+            diamond_timer = 0;
+            diamond_activated = true;
+            next_diamond_score = score + 3;
         }
 
         // If the player is outside the bounds of the screen, they loop to the other side
@@ -353,18 +361,24 @@ int main()
                 }
             }
         }
+        //Activates diamond after score threshold is met.
+        if(!diamond_activated && score >= next_diamond_score)
+        {
+            diamond_x = rng.get_int(MIN_X, MAX_X);
+            diamond_y = rng.get_int(MIN_Y,MAX_Y);
+            diamond.set_position(diamond_x,diamond_y);
+            diamond_timer = 0;
+            diamond_activated = true;
 
-        if(score == 3)
-        {
-            diamond.set_position(0,0);
         }
-        if(diamond_interval_activated)
+        //This sets a timer once the diamond is spawned and will despawn if not touched 
+        if(diamond_activated)
         {
-            diamond_interval++;
-            if(diamond_interval == 240)
+            diamond_timer++;
+            if(diamond_timer == 240)
             {
                 diamond.set_position(320, 320);
-                diamond_interval_activated = false;
+                diamond_activated = false;
             }
         }
 
