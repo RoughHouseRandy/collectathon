@@ -70,7 +70,7 @@ static constexpr int START_X = 0;
 static constexpr int START_Y = 50;
 
 // Game timer - Keep track of how long the game has been running.
-int game_timer = 0;
+int game_timer = 3400;
 bool game_timer_running = false;
 
 int main()
@@ -152,7 +152,7 @@ int main()
     while (true)
     {
         // Start the game timer
-        game_timer++;
+        game_timer--;
 
         // tracks the coordinate for x and y.
         int current_x = player.x().round_integer();
@@ -194,7 +194,7 @@ int main()
             text_generator.generate(-115, -70, "Time:", text_sprites);
             score = 0;              // Reset the score
             speedBoost = 3;         // Reset the speed boost
-            game_timer = 0;         // Reset the game timer
+            game_timer = 3400;      // Reset the game timer
             next_boost_score = 2;   // Reset the score to spawn boost
             next_diamond_score = 3; // Reset the score to spawn diamond
 
@@ -436,10 +436,18 @@ int main()
             }
         }
 
-        // Win condition - If player score gets to 30
-        if (score >= 5)
+        // Win condition - If player score gets to 30, they win
+        if (score >= 30)
         {
-            // Clear all the sprites vectors to clear the screen
+            // Move all sprites off the screen
+            snake.set_position(300, 300);
+            snake_2.set_position(300, 300);
+            snake_3.set_position(300, 300);
+            treasure.set_position(300, 300);
+            diamond.set_position(320, 320);
+            player.set_position(1000, 1000);
+
+            // Clear all the sprites vectors to clear the screen, display victory background
             bg = bn::regular_bg_items::victory.create_bg(0, 0);
             text_sprites.clear();
             timer_sprites.clear();
@@ -447,10 +455,11 @@ int main()
             bn::music::stop();                                        // Stop the bgm
             text_generator.generate(45, -70, "Score:", text_sprites); // Redisplay the score
             text_generator.generate(-30, 0, "You Win!", text_sprites);
-            player.set_position(1000, 1000);
             text_generator.generate(-100, 10, "Press Start to play again!", text_sprites);
         }
-        else if (game_timer >= 600)
+
+        // If the game timer hits 0, the game is over
+        else if (game_timer == 0)
         {
             // Clear all the sprites vectors to clear the screen 1800
             text_sprites.clear();
