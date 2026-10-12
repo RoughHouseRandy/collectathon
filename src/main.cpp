@@ -33,8 +33,9 @@ static constexpr bn::size PLAYER_SIZE = {8, 8};
 static constexpr bn::size TREASURE_SIZE = {8, 8};
 // Width and height of the snake debuff bounding box
 static constexpr bn::size SNAKE_SIZE = {8, 8};
-// Width and heigh of the diamond
+// Width and height of the diamond
 static constexpr bn::size DIAMOND_SIZE = {8, 8};
+// Width and height of the speed boost potion.
 static constexpr bn::size BOOSTPOTION_SIZE = {8, 8};
 
 // Full bounds of the screen
@@ -114,7 +115,9 @@ int main()
     // Will hold a score tracker to track intervals to spawn items
     int next_diamond_score = 3;
     // Will hold tracking for boost potion variables
-
+    int potion_activated = false;
+    int next_boost_score = 2;
+    int potion_timer = 0;
     // Variables for the spawn coordinates for the snakes
     int snk_x = 0;
     int snk_2_x = 0;
@@ -127,6 +130,9 @@ int main()
     int diamond_x = 0;
     int diamond_y = 0;
 
+    int potion_x = 0;
+    int potion_y = 0;
+
     bn::sprite_ptr player = bn::sprite_items::player.create_sprite(START_X, START_Y);
     bn::sprite_ptr treasure = bn::sprite_items::treasure.create_sprite(0, 0);
 
@@ -137,6 +143,9 @@ int main()
 
     // Spawn a more valuable treasure to allow for double points
     bn::sprite_ptr diamond = bn::sprite_items::diamond.create_sprite(320, 320);
+
+    // Spawn a boost potion
+    bn::sprite_ptr potion = bn::sprite_items::boostpotion.create_sprite(320, 320);
 
     while (true)
     {
@@ -175,9 +184,11 @@ int main()
             snake.set_position(300, 300);
             treasure.set_position(0, 0);
             diamond.set_position(320, 320);
+            potion.set_position(320, 320);
             speedBoost = 3;         // Reset the speed boost
             game_timer = 0;         // Reset the game timer
             next_diamond_score = 3; // reset the threshold for the diamond spawner
+            next_boost_score = 2;   // reset the threshold for spawning a boost potion
         }
 
         // When the A button is pressed apply a speed boost that lasts 5 seconds
@@ -220,6 +231,11 @@ int main()
                                          diamond.y().round_integer(),
                                          DIAMOND_SIZE.width(),
                                          DIAMOND_SIZE.height());
+        // The bounding box of the potion
+        bn::rect potion_rect = bn::rect(potion.x().round_integer(),
+                                        potion.y().round_integer(),
+                                        BOOSTPOTION_SIZE.width(),
+                                        BOOSTPOTION_SIZE.height());
 
         // If the bounding boxes overlap, set the treasure to a new location an increase score
         if (player_rect.intersects(treasure_rect))
@@ -281,6 +297,20 @@ int main()
             diamond_timer = 0;
             diamond_activated = true;
             next_diamond_score = score + 3;
+        }
+        if (potion_activated && player_rect.intersects(potion_rect))
+        {
+            if(speedBoost >= 3)
+            {
+                speedBoost++;
+            }
+            int rnd_potionx = rng.get_int(MIN_X,MAX_X);
+            int rnd_potiony = rng.get_int(MIN_Y,MAX_Y);
+            potion.set_position(rnd_potionx, rnd_potiony);
+            potion_timer = 0;
+            potion_activated = true;
+            next_boost_score = score + 2;
+            
         }
 
         // If the player is outside the bounds of the screen, they loop to the other side
@@ -385,6 +415,25 @@ int main()
             {
                 diamond.set_position(320, 320);
                 diamond_activated = false;
+            }
+        }
+        // activates the potion spawn if the player ran out of boosts and the score threshold is met.
+        if (!potion_activated && speedBoost == 0 && (score >= next_boost_score))
+        {
+            potion_x = rng.get_int(MIN_X, MAX_X);
+            potion_y = rng.get_int(MIN_Y, MAX_Y);
+            potion.set_position(potion_x, potion_y);
+            potion_timer = 0;
+            potion_activated = true;
+        }
+        // This sets the timer despawning a boost potion.
+        if (potion_activated)
+        {
+            potion_timer++;
+            if (potion_timer == 240)
+            {
+                potion.set_position(320, 320);
+                potion_activated = false;
             }
         }
 
