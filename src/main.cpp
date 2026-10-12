@@ -427,14 +427,15 @@ int main()
         }
 
         // Win condition - If player score gets to 30
-        if (score >= 10)
+        if (score >= 5)
         {
             // Clear all the sprites vectors to clear the screen
             text_sprites.clear();
             timer_sprites.clear();
             speed_boost_sprites.clear();
-            text_generator.generate(45, -70, "Score:", text_sprites);
-            text_generator.generate(-30, 0, "You Win!", text_sprites); // Redisplay the score
+            text_generator.generate(45, -70, "Score:", text_sprites); // Redisplay the score
+            text_generator.generate(-30, 0, "You Win!", text_sprites);
+            player.set_position(1000, 1000);
             text_generator.generate(-100, 10, "Press Start to play again!", text_sprites);
         }
         else if (game_timer >= 600)
@@ -443,6 +444,7 @@ int main()
             text_sprites.clear();
             timer_sprites.clear();
             speed_boost_sprites.clear();
+            player.set_position(300, 300);
             text_generator.generate(45, -70, "Score:", text_sprites); // Redisplay the score
             text_generator.generate(-40, 0, "You Lose!", text_sprites);
             text_generator.generate(-100, 10, "Press Start to play again!", text_sprites);
