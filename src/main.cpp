@@ -12,6 +12,7 @@
 #include <bn_colors.h>
 #include <bn_backdrop.h>
 
+// Sprites and backgrounds
 #include "bn_sprite_items_player.h"
 #include "bn_sprite_items_treasure.h"
 #include "bn_sprite_items_snake.h"
@@ -19,12 +20,15 @@
 #include "bn_sprite_items_snake_3.h"
 #include "bn_sprite_items_diamond.h"
 #include "bn_sprite_items_boostpotion.h"
+#include "bn_regular_bg_items_cavebackground.h"
+#include "bn_regular_bg_ptr.h"
+
 #include "common_fixed_8x16_font.h"
+
+// Sounds and music
 #include "bn_sound_items.h"
 #include "bn_music_items.h"
 #include "bn_music.h"
-#include "bn_regular_bg_items_cavebackground.h"
-#include "bn_regular_bg_ptr.h"
 
 // Pixels / Frame player moves at
 static constexpr bn::fixed SPEED = 1.5;
@@ -98,8 +102,8 @@ int main()
     bn::vector<bn::sprite_ptr, MAX_SECONDS> timer_sprites = {};
     text_generator.generate(-115, -70, "Time:", text_sprites);
 
-    int score = 0;
-    int speedBoost = 3;
+    int score = 0;      // Initial score
+    int speedBoost = 3; // Initial speed boosts
 
     // Background music
     bn::music_items::cavern.play(0.5);
@@ -119,7 +123,8 @@ int main()
     int potion_activated = false;
     int next_boost_score = 2;
     int potion_timer = 0;
-    // Variables for the spawn coordinates for the snakes
+
+    // Variables for the spawn coordinates for the snakes and diamons
     int snk_x = 0;
     int snk_2_x = 0;
     int snk_3_x = 0;
@@ -440,7 +445,7 @@ int main()
             text_sprites.clear();
             timer_sprites.clear();
             speed_boost_sprites.clear();
-            bn::music::stop(); // Stop the bgm
+            bn::music::stop();                                        // Stop the bgm
             text_generator.generate(45, -70, "Score:", text_sprites); // Redisplay the score
             text_generator.generate(-30, 0, "You Win!", text_sprites);
             player.set_position(1000, 1000);
