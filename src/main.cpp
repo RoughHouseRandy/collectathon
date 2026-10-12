@@ -179,7 +179,7 @@ int main()
         {
             // Clear the HUD
             text_sprites.clear();
-            bg = bn::regular_bg_items::cavebackground.create_bg(0,0);
+            bg = bn::regular_bg_items::cavebackground.create_bg(0, 0);
             // When the start button is pressed - reset the position of treasure, score, and player
             player.set_position(START_X, START_Y);
             snake.set_position(300, 300);
@@ -440,7 +440,7 @@ int main()
         if (score >= 5)
         {
             // Clear all the sprites vectors to clear the screen
-            bg = bn::regular_bg_items::victory.create_bg(0,0);
+            bg = bn::regular_bg_items::victory.create_bg(0, 0);
             text_sprites.clear();
             timer_sprites.clear();
             speed_boost_sprites.clear();
