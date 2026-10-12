@@ -22,6 +22,7 @@
 #include "common_fixed_8x16_font.h"
 #include "bn_sound_items.h"
 #include "bn_music_items.h"
+#include "bn_music.h"
 #include "bn_regular_bg_items_cavebackground.h"
 #include "bn_regular_bg_ptr.h"
 
@@ -179,16 +180,23 @@ int main()
             text_sprites.clear();
 
             // When the start button is pressed - reset the position of treasure, score, and player
-            score = 0;
             player.set_position(START_X, START_Y);
             snake.set_position(300, 300);
+            snake_2.set_position(300, 300);
+            snake_3.set_position(300, 300);
             treasure.set_position(0, 0);
             diamond.set_position(320, 320);
-            potion.set_position(320, 320);
-            speedBoost = 3;         // Reset the speed boost
-            game_timer = 0;         // Reset the game timer
-            next_diamond_score = 3; // reset the threshold for the diamond spawner
-            next_boost_score = 2;   // reset the threshold for spawning a boost potion
+
+            // Regenerate the HUD
+            text_generator.generate(45, -70, "Score:", text_sprites);
+            text_generator.generate(45, -60, "Boosts:", text_sprites);
+            text_generator.generate(-115, -70, "Time:", text_sprites);
+            score = 0;      // Reset the score
+            speedBoost = 3; // Reset the speed boost
+            game_timer = 0; // Reset the game timer
+
+            // Start the bgm again
+            bn::music_items::cavern.play(0.5);
         }
 
         // When the A button is pressed apply a speed boost that lasts 5 seconds
@@ -300,17 +308,16 @@ int main()
         }
         if (potion_activated && player_rect.intersects(potion_rect))
         {
-            if(speedBoost <= 3)
+            if (speedBoost <= 3)
             {
                 speedBoost++;
             }
-            int rnd_potionx = rng.get_int(MIN_X,MAX_X);
-            int rnd_potiony = rng.get_int(MIN_Y,MAX_Y);
+            int rnd_potionx = rng.get_int(MIN_X, MAX_X);
+            int rnd_potiony = rng.get_int(MIN_Y, MAX_Y);
             potion.set_position(rnd_potionx, rnd_potiony);
             potion_timer = 0;
             potion_activated = true;
             next_boost_score = score + 2;
-            
         }
 
         // If the player is outside the bounds of the screen, they loop to the other side
@@ -433,6 +440,7 @@ int main()
             text_sprites.clear();
             timer_sprites.clear();
             speed_boost_sprites.clear();
+            bn::music::stop(); // Stop the bgm
             text_generator.generate(45, -70, "Score:", text_sprites); // Redisplay the score
             text_generator.generate(-30, 0, "You Win!", text_sprites);
             player.set_position(1000, 1000);
@@ -444,6 +452,7 @@ int main()
             text_sprites.clear();
             timer_sprites.clear();
             speed_boost_sprites.clear();
+            bn::music::stop(); // Stop the bgm
             player.set_position(300, 300);
             text_generator.generate(45, -70, "Score:", text_sprites); // Redisplay the score
             text_generator.generate(-40, 0, "You Lose!", text_sprites);
