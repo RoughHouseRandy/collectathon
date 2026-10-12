@@ -103,10 +103,10 @@ int main()
     // Will hold the timer for the speed boost.
     int speed_boost_timer = 0;
     bool speed_boost_active = false;
-    //Will hold the timer for debuff
+    // Will hold the timer for debuff
     int debuff_timer = 0;
     bool debuff_active = false;
-    //Will hold the interval for spawning diamond
+    // Will hold the interval for spawning diamond
     int diamond_interval = 0;
     bool diamond_interval_activated = false;
 
@@ -139,7 +139,6 @@ int main()
         int current_x = player.x().round_integer();
         int current_y = player.y().round_integer();
 
-
         // Move player with d-pad
         if (bn::keypad::left_held())
         {
@@ -159,12 +158,22 @@ int main()
         }
         if (bn::keypad::start_pressed())
         {
+            // Create the HUD
+            text_sprites.clear();
+
             // When the start button is pressed - reset the position of treasure, score, and player
-            score = 0;
             player.set_position(START_X, START_Y);
             snake.set_position(300, 300);
+            snake_2.set_position(300, 300);
+            snake_3.set_position(300, 300);
             treasure.set_position(0, 0);
             diamond.set_position(320, 320);
+
+            // Regenerate the HUD
+            text_generator.generate(45, -70, "Score:", text_sprites);
+            text_generator.generate(45, -60, "Boosts:", text_sprites);
+            text_generator.generate(-115, -70, "Time:", text_sprites);
+            score = 0;      // Reset the score
             speedBoost = 3; // Reset the speed boost
             game_timer = 0; // Reset the game timer
         }
@@ -316,10 +325,14 @@ int main()
         // Win condition - If player score gets to 30
         if (score == 30)
         {
+            text_sprites.clear();
             text_generator.generate(0, 0, "You Win!", text_sprites);
-        } else if (game_timer >= 1800) {
+        }
+        else if (game_timer >= 300)
+        {
+            // 1800
+            text_sprites.clear();
             text_generator.generate(0, 0, "You Lose!", text_sprites);
-            bn::backdrop::set_color(bn::color(0x0210));
         }
 
         // Update score display
@@ -354,14 +367,14 @@ int main()
             }
         }
 
-        if(score == 3)
+        if (score == 3)
         {
-            diamond.set_position(0,0);
+            diamond.set_position(0, 0);
         }
-        if(diamond_interval_activated)
+        if (diamond_interval_activated)
         {
             diamond_interval++;
-            if(diamond_interval == 240)
+            if (diamond_interval == 240)
             {
                 diamond.set_position(320, 320);
                 diamond_interval_activated = false;
