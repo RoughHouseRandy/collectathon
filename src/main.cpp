@@ -300,7 +300,7 @@ int main()
         }
         if (potion_activated && player_rect.intersects(potion_rect))
         {
-            if(speedBoost >= 3)
+            if(speedBoost <= 3)
             {
                 speedBoost++;
             }
@@ -353,18 +353,6 @@ int main()
                 debuff_active = false;
                 current_speed = SPEED;
             }
-        }
-
-        // Win condition - If player score gets to 30
-        if (score >= 10)
-        {
-            text_sprites.clear();
-            text_generator.generate(-30, 0, "You Win!", text_sprites);
-        }
-        else if (game_timer >= 1800)
-        {
-            text_sprites.clear();
-            text_generator.generate(-40, 0, "You Lose!", text_sprites);
         }
 
         // Update score display
@@ -425,16 +413,39 @@ int main()
             potion.set_position(potion_x, potion_y);
             potion_timer = 0;
             potion_activated = true;
+            next_boost_score = score + 2;
         }
         // This sets the timer despawning a boost potion.
         if (potion_activated)
         {
             potion_timer++;
-            if (potion_timer == 240)
+            if (potion_timer == 240 || speedBoost >= 1)
             {
                 potion.set_position(320, 320);
                 potion_activated = false;
             }
+        }
+
+        // Win condition - If player score gets to 30
+        if (score >= 10)
+        {
+            // Clear all the sprites vectors to clear the screen
+            text_sprites.clear();
+            timer_sprites.clear();
+            speed_boost_sprites.clear();
+            text_generator.generate(45, -70, "Score:", text_sprites);
+            text_generator.generate(-30, 0, "You Win!", text_sprites); // Redisplay the score
+            text_generator.generate(-100, 10, "Press Start to play again!", text_sprites);
+        }
+        else if (game_timer >= 600)
+        {
+            // Clear all the sprites vectors to clear the screen 1800
+            text_sprites.clear();
+            timer_sprites.clear();
+            speed_boost_sprites.clear();
+            text_generator.generate(45, -70, "Score:", text_sprites); // Redisplay the score
+            text_generator.generate(-40, 0, "You Lose!", text_sprites);
+            text_generator.generate(-100, 10, "Press Start to play again!", text_sprites);
         }
 
         rng.update();
